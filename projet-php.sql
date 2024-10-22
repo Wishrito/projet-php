@@ -15,46 +15,24 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Listage de la structure de la base pour messagerie_lycee
-CREATE DATABASE IF NOT EXISTS `messagerie_lycee` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `messagerie_lycee`;
+-- Listage de la structure de la base pour crm_hopital
+DROP DATABASE IF EXISTS `crm_hopital`;
+CREATE DATABASE IF NOT EXISTS `crm_hopital` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `crm_hopital`;
 
--- Listage de la structure de table messagerie_lycee. message
-CREATE TABLE IF NOT EXISTS `message` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `content` text,
-  `file` text,
+-- Listage de la structure de table crm_hopital. patient
+DROP TABLE IF EXISTS `patient`;
+CREATE TABLE IF NOT EXISTS `patient` (
+  `ID` int NOT NULL,
+  `floor_lvl` int DEFAULT NULL,
+  `admission_date` date DEFAULT NULL,
+  `background` text,
   PRIMARY KEY (`ID`),
-  CONSTRAINT `FK_message_users` FOREIGN KEY (`ID`) REFERENCES `users` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FK_heritage` FOREIGN KEY (`ID`) REFERENCES `users` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='héritage de la table users, destiné aux patients';
 
--- Listage des données de la table messagerie_lycee.message : ~0 rows (environ)
-DELETE FROM `message`;
-
--- Listage de la structure de table messagerie_lycee. users
-CREATE TABLE IF NOT EXISTS `users` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `email` varchar(50) DEFAULT NULL,
-  `password` varchar(200) DEFAULT NULL,
-  `type` int DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FK_user_usertype` (`type`),
-  CONSTRAINT `FK_user_usertype` FOREIGN KEY (`type`) REFERENCES `usertype` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='contient les informations sur les utilisateurs';
-
--- Listage des données de la table messagerie_lycee.users : ~0 rows (environ)
-DELETE FROM `users`;
-
--- Listage de la structure de table messagerie_lycee. usertype
-CREATE TABLE IF NOT EXISTS `usertype` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `label` text NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Listage des données de la table messagerie_lycee.usertype : ~0 rows (environ)
-DELETE FROM `usertype`;
+-- Listage des données de la table crm_hopital.patient : ~0 rows (environ)
+DELETE FROM `patient`;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
