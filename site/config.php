@@ -61,7 +61,7 @@ class SiteConfig
         $this->attributes['site_name'] = $site_name;
     }
 
-    public function getSiteName(): string
+    public function siteName(): string
     {
         return $this->attributes['site_name'];
     }
@@ -69,7 +69,7 @@ class SiteConfig
 
 $site = new SiteConfig("CRM Hopital");
 $site->setAttribute('db', 'crm_hopital');
-$user = 'root';
+$site->setAttribute('user', 'root');
 $pass = '';
 
 try {
