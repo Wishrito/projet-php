@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 class SiteConfig
 {
     private $attributes = [
@@ -79,3 +81,24 @@ try {
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }
+?>
+
+<div class="block">
+<header class="header">
+    <a href="index.php" class="header-logo">Accueil</a>
+    <nav class="header-menu">
+        <?php
+        // Vérifier si l'utilisateur est connecté
+        if (isset($_SESSION['email'])) {
+            // Si connecté, afficher l'email de l'utilisateur et un lien de déconnexion
+            echo '<a href="pages/account.php">Mon compte</a>';
+            echo '<a href="pages/logout.php">Se déconnecter</a>';
+        } else {
+            // Si non connecté, afficher les liens de connexion et d'inscription
+            echo '<a href="pages/login.php">Connexion</a>';
+            echo '<a href="pages/signup.php">Inscription</a>';
+        }
+        ?>
+    </nav>
+</header>
+</div>
