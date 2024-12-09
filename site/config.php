@@ -85,7 +85,7 @@ try {
 
 <div class="block">
 <header class="header">
-    <a href="index.php" class="header-logo">Accueil</a>
+    <a href="<?php echo $site->base_url()."index.php"?> " class="header-logo">Accueil</a>
     <nav class="header-menu">
         <?php
         // Vérifier si l'utilisateur est connecté
