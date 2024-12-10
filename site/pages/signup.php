@@ -1,5 +1,7 @@
 <?php
+const ACCESS_ALLOWED = true;
 require './config.php'; // Inclure la connexion à la base de données
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $_POST['username'];
@@ -28,10 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="field">
                     <label class="label">Confirmer le mot de passe</label>
                     <div class="control">
-                        <input class="input" type="password" name="passwordCoxcènfirm"
+                        <input class="input" type="password" name="passwordConfirm"
                             placeholder="Entrez votre mot de passe" required>
                     </div>
                 </div>
@@ -77,6 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="field">
                     <div class="control">
                         <button type="submit" class="button is-primary">S'inscrire</button>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <label for="user_type">Type d'utilisateur</label>
+                        <select name="user_type" id="">
+                            <option value="medical_staff">Corps Médical</option>
+                            <option value="patient">Patient</option>
+                        </select>
                     </div>
                 </div>
             </form>

@@ -1,4 +1,6 @@
-<?php include "./config.php" ?>
+<?php const ACCESS_ALLOWED = true;
+include_once "./config.php";
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
