@@ -1,5 +1,5 @@
 <?php const ACCESS_ALLOWED = true;
-include_once "./config.php";
+require "./config.php";
 ?>
 <!DOCTYPE html>
 <html lang="fr">

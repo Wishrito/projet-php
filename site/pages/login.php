@@ -1,6 +1,6 @@
 <?php
 const ACCESS_ALLOWED = true;
-include_once './config.php'; // Inclure la connexion à la base de données
+require './config.php'; // Inclure la connexion à la base de données
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
