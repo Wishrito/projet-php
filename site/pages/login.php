@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($user && password_verify($password, $user['password'])) {
         // Connexion réussie, création de la session utilisateur
         $_SESSION['email'] = $user['email'];
-        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['ID'] = $user['id'];
         header("Location: ../index.php");
     } else { ?>
         <div class='notification is-danger'>Email ou mot de passe incorrect.</div>
@@ -45,9 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="block">
             <form action="" method="post" class="box">
                 <h1 class="title is-4 has-text-centered">Connexion</h1>
-        
                 <div class="field">
-                    <label class="label" for="email">Nom d'utilisateur</label>
+                    <label class="label" for="email">Email</label>
                     <div class="control">
                         <input class="input" type="text" id="email" name="email" placeholder="Entrez votre email" required>
                     </div>

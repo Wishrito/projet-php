@@ -3,13 +3,15 @@ const ACCESS_ALLOWED = true;
 require './config.php'; // Inclure la connexion à la base de données
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_id = $_POST['username'];
-    $username = $_POST['email'];
+    $user_type = $_POST['user_type'];
+    $lastname = $_POST['lastname'];
+    $firstname = $_POST['firstname'];
+    $username = strtolower($firstname[0]) . strtolower(str_replace(' ', '-', $lastname));
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hachage du mot de passe
 
     // Vérifier si l'utilisateur existe déjà
-    $requete = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
-    $requete->execute([$username]);
+    $requete = $pdo->prepare("SELECT COUNT(*) FROM ? WHERE email = ?");
+    $requete->execute([$user_type, $username]);
     $count = $requete->fetchColumn();
 
     if ($count > 0) { ?>
@@ -38,14 +40,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <section class="section">
-        <div class="container">
-            <h1 class="title">Inscription</h1>
+        <div class="block">
+            <form action="" method="post" class="box">
+                <h1 class="title is-4 has-text-centered">Inscription</h1>
             <form method="POST" action="">
-                <div class="field">
-                    <label class="label">Nom d'utilisateur</label>
-                    <div class="control">
-                        <input class="input" type="text" name="username" placeholder="Entrez votre nom d'utilisateur"
-                            required>
+                <div>
+                    <div class="field">
+                        <label class="label">Nom</label>
+                        <div class="control">
+                            <input class="input" type="text" name="lastname" placeholder="Entrez votre nom d'utilisateur"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Prénom</label>
+                        <div class="control">
+                            <input class="input" type="text" name="firstname" placeholder="Entrez votre nom d'utilisateur"
+                                required>
+                        </div>
                     </div>
                 </div>
 
@@ -71,13 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             placeholder="Entrez votre mot de passe" required>
                     </div>
                 </div>
-
-                <div class="field">
-                    <div class="control">
-                        <button type="submit" class="button is-primary">S'inscrire</button>
-                    </div>
-                </div>
-
                 <div class="field">
                     <div class="control">
                         <label for="user_type">Type d'utilisateur</label>
@@ -87,6 +93,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </select>
                     </div>
                 </div>
+
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">S'inscrire</button>
+                    </div>
+                </div>
+
             </form>
         </div>
     </section>
