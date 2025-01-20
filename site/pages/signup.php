@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription</title>
+    <title><?php echo $site->siteName() ?> - Inscription</title>
 </head>
 
 <body>
@@ -104,5 +104,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </section>
 </body>
+
+<footer>
+     <div>
+        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+     </div>
+</footer>
 
 </html>

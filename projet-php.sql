@@ -16,53 +16,66 @@
 
 
 -- Listage de la structure de la base pour crm_hopital
+DROP DATABASE IF EXISTS `crm_hopital`;
 CREATE DATABASE IF NOT EXISTS `crm_hopital` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `crm_hopital`;
 
 -- Listage de la structure de table crm_hopital. consultation
+DROP TABLE IF EXISTS `consultation`;
 CREATE TABLE IF NOT EXISTS `consultation` (
   `ID` int NOT NULL,
   `debrief` text NOT NULL,
   `patient_id` int NOT NULL,
   `medical_staff_id` int NOT NULL,
-  PRIMARY KEY (`ID`)
+  `service_id` int DEFAULT NULL,
+  `date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_consultation_service` (`service_id`),
+  KEY `FK_consultation_patient` (`patient_id`),
+  KEY `FK_consultation_staff` (`medical_staff_id`),
+  CONSTRAINT `FK_consultation_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`ID`),
+  CONSTRAINT `FK_consultation_service` FOREIGN KEY (`service_id`) REFERENCES `service` (`ID`),
+  CONSTRAINT `FK_consultation_staff` FOREIGN KEY (`medical_staff_id`) REFERENCES `medical_staff` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.consultation : ~0 rows (environ)
-DELETE FROM `consultation`;
+-- Les données exportées n'étaient pas sélectionnées.
 
 -- Listage de la structure de table crm_hopital. job
+DROP TABLE IF EXISTS `job`;
 CREATE TABLE IF NOT EXISTS `job` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `libelle` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.job : ~0 rows (environ)
-DELETE FROM `job`;
-INSERT INTO `job` (`ID`, `libelle`) VALUES
-	(1, 'Medecin'),
-	(2, 'Interne');
+-- Les données exportées n'étaient pas sélectionnées.
 
 -- Listage de la structure de table crm_hopital. medical_record
+DROP TABLE IF EXISTS `medical_record`;
 CREATE TABLE IF NOT EXISTS `medical_record` (
   `id` int NOT NULL,
   `record_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `diagnosis` int DEFAULT NULL,
+  `diagnosis` text,
   `doctor_id` int DEFAULT NULL,
-  `notes` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `patient_id` int DEFAULT NULL,
+  `notes` text,
+  PRIMARY KEY (`id`),
+  KEY `FK_record_patient` (`patient_id`),
+  KEY `FK_record_staff` (`doctor_id`),
+  CONSTRAINT `FK_record_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`ID`),
+  CONSTRAINT `FK_record_staff` FOREIGN KEY (`doctor_id`) REFERENCES `medical_staff` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.medical_record : ~0 rows (environ)
-DELETE FROM `medical_record`;
+-- Les données exportées n'étaient pas sélectionnées.
 
 -- Listage de la structure de table crm_hopital. medical_staff
+DROP TABLE IF EXISTS `medical_staff`;
 CREATE TABLE IF NOT EXISTS `medical_staff` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `first_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `username` int DEFAULT NULL,
+  `first_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `last_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `birth_date` date NOT NULL,
   `leaving_date` timestamp NULL DEFAULT NULL,
@@ -76,10 +89,10 @@ CREATE TABLE IF NOT EXISTS `medical_staff` (
   CONSTRAINT `fk_staff_service` FOREIGN KEY (`service`) REFERENCES `service` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.medical_staff : ~0 rows (environ)
-DELETE FROM `medical_staff`;
+-- Les données exportées n'étaient pas sélectionnées.
 
 -- Listage de la structure de table crm_hopital. message
+DROP TABLE IF EXISTS `message`;
 CREATE TABLE IF NOT EXISTS `message` (
   `ID` int NOT NULL,
   `content` text NOT NULL,
@@ -90,38 +103,35 @@ CREATE TABLE IF NOT EXISTS `message` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.message : ~0 rows (environ)
-DELETE FROM `message`;
+-- Les données exportées n'étaient pas sélectionnées.
 
 -- Listage de la structure de table crm_hopital. patient
+DROP TABLE IF EXISTS `patient`;
 CREATE TABLE IF NOT EXISTS `patient` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `first_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `username` varchar(60) DEFAULT NULL,
+  `first_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `last_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `birth_date` date NOT NULL,
+  `admission_date` timestamp NULL DEFAULT NULL,
   `leaving_date` timestamp NULL DEFAULT NULL,
   `floor_lvl` int DEFAULT '0',
-  `admission_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.patient : ~0 rows (environ)
-DELETE FROM `patient`;
+-- Les données exportées n'étaient pas sélectionnées.
 
 -- Listage de la structure de table crm_hopital. service
+DROP TABLE IF EXISTS `service`;
 CREATE TABLE IF NOT EXISTS `service` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `libelle` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.service : ~0 rows (environ)
-DELETE FROM `service`;
-INSERT INTO `service` (`ID`, `libelle`) VALUES
-	(1, 'Urgences'),
-	(2, 'Cardiologie');
+-- Les données exportées n'étaient pas sélectionnées.
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

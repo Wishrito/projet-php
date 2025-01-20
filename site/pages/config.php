@@ -74,7 +74,7 @@ class SiteConfig
 
 }
 
-$site = new SiteConfig("CRM Hopital");
+$site = new SiteConfig("SantéPlus");
 $site->setAttribute('db', 'crm_hopital');
 $site->setAttribute('user', 'root');
 $pass = '';
@@ -115,9 +115,4 @@ try {
 
     </body>
 
-        <footer>
-            <div>
-                <p>© 2025 Centre Hospitalier. Tous droits réservés.</p>
-            </div>
-        </footer>
 </html>
