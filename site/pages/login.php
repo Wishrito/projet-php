@@ -81,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <p class="help is-info has-text-centered">Pas encore inscrit ? Contactez l'administrateur informatique.</p>
             </form>
         </div>
+
     <?php } else { ?>
         <div class="container">
             <h1 class="title is-4">Bienvenue, <?php echo $_SESSION['email']; ?></h1>

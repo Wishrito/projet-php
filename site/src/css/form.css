@@ -68,7 +68,9 @@ form p {
 .container {
     text-align: center;
     padding: 20px;
+    margin-top: 70px; /* Ajuste selon la hauteur de la navbar */
 }
+
 
 .container h1 {
     font-size: 1.5rem;

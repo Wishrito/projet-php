@@ -8,7 +8,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed; /* Fixe la navbar */
+    top: 0; /* Place-la en haut de la fenêtre */
+    left: 0;
+    width: 100%; /* Prend toute la largeur de l'écran */
+    background-color: #fff; /* Assure une couleur de fond pour la navbar */
+    border-bottom: 1px solid #ddd;
+    z-index: 1000; /* Place la navbar au-dessus des autres éléments */
+    padding: 10px 20px; /* Ajoute des marges internes */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ajoute un léger effet d'ombre */
 }
+
 
 .header-logo {
     font-size: 1.5rem;
@@ -21,13 +31,26 @@
     color: #2753a5;
 }
 
-.header-menu a {
+.header-menu .a {
     margin-left: 10px;
     color: #4a4a4a; /* Couleur de texte Bulma par défaut */
     text-decoration: none;
     font-weight: 500;
 }
 
-.header-menu a:hover {
+.header-menu .a:hover {
     color: #3273dc;
+}
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+    height: 500px;
+    width: 500px;
+    
+}
+.footer .p {
+    margin: 0;
 }
