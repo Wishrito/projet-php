@@ -87,3 +87,14 @@ form p {
 .container form input[type="submit"]:hover {
     background-color: #e03152;
 }
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    /* Ajoute un espace entre les champs */
+}
+
+.form-row input[type="text"] {
+    flex: 1;
+    /* Permet aux champs d'occuper la même largeur */
+}

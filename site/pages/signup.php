@@ -41,24 +41,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <section class="section">
         <div class="block">
-            <form action="" method="post" class="box">
-                <h1 class="title is-4 has-text-centered">Inscription</h1>
             <form method="POST" action="">
                 <div>
-                    <div class="field">
-                        <label class="label">Nom</label>
-                        <div class="control">
-                            <input class="input" type="text" name="lastname" placeholder="Entrez votre nom d'utilisateur"
-                                required>
+                    <h1 class="title is-4 has-text-centered">Inscription</h1>
+                    <div class="form-row">
+                        <div class="field">
+                            <label class="label">Nom</label>
+                            <div class="control">
+                                <input class="input" type="text" name="lastname" placeholder="Entrez votre nom d'utilisateur"
+                                    required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="field">
-                        <label class="label">Prénom</label>
-                        <div class="control">
-                            <input class="input" type="text" name="firstname" placeholder="Entrez votre nom d'utilisateur"
-                                required>
+                        <div class="field">
+                            <label class="label">Prénom</label>
+                            <div class="control">
+                                <input class="input" type="text" name="firstname" placeholder="Entrez votre nom d'utilisateur"
+                                    required>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -68,20 +70,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input class="input" type="email" name="email" placeholder="Entrez votre email" required>
                     </div>
                 </div>
-
-                <div class="field">
-                    <label class="label">Mot de passe</label>
-                    <div class="control">
-                        <input class="input" type="password" name="password" placeholder="Entrez votre mot de passe"
-                            required>
+                <div class="form-row">
+                    <div class="field">
+                        <label class="label">Mot de passe</label>
+                        <div class="control">
+                            <input class="input" type="password" name="password" placeholder="Entrez votre mot de passe"
+                                required>
+                        </div>
                     </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Confirmer le mot de passe</label>
-                    <div class="control">
-                        <input class="input" type="password" name="passwordConfirm"
-                            placeholder="Entrez votre mot de passe" required>
+    
+                    <div class="field">
+                        <label class="label">Confirmer</label>
+                        <div class="control">
+                            <input class="input" type="password" name="passwordConfirm"
+                                placeholder="Entrez votre mot de passe" required>
+                        </div>
                     </div>
                 </div>
                 <div class="field">
@@ -106,9 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </body>
 
 <footer>
-     <div>
+    <div>
         <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
-     </div>
+    </div>
 </footer>
 
 </html>
