@@ -2,7 +2,6 @@
 const ACCESS_ALLOWED = true;
 require './config.php'; // Inclure la connexion à la base de données
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -51,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input class="input" type="text" id="email" name="email" placeholder="Entrez votre email" required>
                     </div>
                 </div>
-        
+
                 <div class="field">
                     <label class="label" for="password">Mot de passe</label>
                     <div class="control">
@@ -91,7 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     <?php } ?>
 </body>
-
 
 <footer>
      <div>

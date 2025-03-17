@@ -33,4 +33,11 @@ $query->execute([$_SESSION['ID']]);
     </div>
     <a href="logout.php" class="button is-danger">Déconnexion</a>
 </body>
+
+<footer>
+     <div>
+        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+     </div>
+</footer>
+
 </html>
