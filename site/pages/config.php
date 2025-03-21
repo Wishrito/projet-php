@@ -4,7 +4,10 @@ if (!defined('ACCESS_ALLOWED')) {
     header('HTTP/1.1 403 Forbidden');
     exit('Access denied.');
 }
-session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 class SiteConfig
 {
@@ -29,8 +32,13 @@ class SiteConfig
     }
 
     // function to get the base path
-    function base_url(): string
+    public function baseUrl(): string
     {
+        // Vérifier si les variables $_SERVER nécessaires sont définies
+        if (!isset($_SERVER['HTTP_HOST'], $_SERVER['SCRIPT_NAME'])) {
+            return '/';
+        }
+
         // Détecter si HTTPS est activé
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 
@@ -71,48 +79,53 @@ class SiteConfig
     {
         return $this->attributes['site_name'];
     }
-
 }
 
 $site = new SiteConfig("SantéPlus");
 $site->setAttribute('db', 'crm_hopital');
 $site->setAttribute('user', 'root');
-$pass = '';
+$site->setAttribute('pass', ''); // Assurez-vous de définir un mot de passe sécurisé
 
 try {
-    $pdo = new PDO("mysql:host=" . $site->getAttribute('host') . ";dbname=" . $site->getAttribute('db') . ";charset=utf8", $site->getAttribute('user'), $site->getAttribute('pass'));
+    $pdo = new PDO(
+        "mysql:host=" . $site->getAttribute('host') . ";dbname=" . $site->getAttribute('db') . ";charset=utf8",
+        $site->getAttribute('user'),
+        $site->getAttribute('pass')
+    );
     // Définir le mode d'erreur PDO sur Exception
-
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }
 ?>
 <!DOCTYPE HTML>
 <html lang="fr">
-    <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-        <link rel="stylesheet" href="../src/css/styles.css">
-        <link rel="stylesheet" href="../src/css/form.css">
 
-        <div class="block">
-            <header class="header">
-                <a href="<?php echo $site->base_url() . 'index.php' ?>" class="header-logo">Accueil</a>
-                <nav class="header-menu">
-                    <?php
-                    $base_url = $site->base_url();
-                    if (isset($_SESSION['email'])) { ?>
-                        <a href="<?php echo $base_url . 'account.php' ?>" class="button is-primary is-light">Mon compte</a>
-                        <a href="<?php echo $base_url . 'logout.php' ?>" class="button is-danger is-light">Se déconnecter</a>
-                    <?php } else { ?>
-                        <a href="<?php echo $base_url . 'login.php' ?>" class="button is-link is-light">Connexion</a>
-                        <a href="<?php echo $base_url . 'signup.php' ?>" class="button is-success is-light">Inscription</a>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="../src/css/styles.css">
+    <link rel="stylesheet" href="../src/css/form.css">
+</head>
+
+<body>
+    <div class="block">
+        <header class="header">
+            <a href="<?php echo $site->baseUrl() . 'index.php'; ?>" class="header-logo">Accueil</a>
+            <nav class="header-menu">
+                <?php
+                $base_url = $site->baseUrl();
+                if (!isset($_SESSION['ID'])) { ?>
+                            <a href="<?php echo $base_url . 'login.php'; ?>" class="button is-link is-light">Connexion</a>
+                            <a href="<?php echo $base_url . 'signup.php'; ?>" class="button is-success is-light">Inscription</a>
+
+                <?php } else { ?>
+                            <a href="<?php echo $base_url . 'account.php'; ?>" class="button is-primary is-light">Mon compte</a>
+                        <a href="<?php echo $base_url . 'logout.php'; ?>" class="button is-danger is-light">Se déconnecter</a>
                     <?php } ?>
-                </nav>
+            </nav>
             </header>
-        </div>
-    </head>
-    <body>
-
-    </body>
+        
+    </div>
+</body>
 
 </html>

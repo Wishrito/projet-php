@@ -1,15 +1,17 @@
 <?php
-include_once '../config.php'; 
+const ACCESS_ALLOWED = true;
+include_once './config.php';
 
-//rajouter If user = patient
 
 if (!isset($_SESSION['ID'])) {
     header('Location: login.php');
     exit();
 }
-
-$query = $bdd->prepare('SELECT email, first_name, last_name, birth_date, leaving_date, floor_lvl, admission_date FROM patient WHERE ID = ? ');
+$user_type = $_SESSION['user_type'];
+$query = $pdo->prepare("SELECT ID, username, email, first_name, last_name, birth_date, leaving_date, floor_lvl, admission_date FROM $user_type WHERE ID = ? ");
 $query->execute([$_SESSION['ID']]);
+$user = $query->fetch(PDO::FETCH_ASSOC);
+
 
 ?>
 
@@ -22,6 +24,8 @@ $query->execute([$_SESSION['ID']]);
     <div class="block">
         <h1 class="title is-4 has-text-centered">Mon compte</h1>
         <div class="content">
+            <p><strong>Identifiant:</strong> <?php echo $user['ID'] ?></p>
+            <p><strong>Nom d'utilisateur:</strong> <?php echo $user['username'] ?></p>
             <p><strong>Email:</strong> <?php echo $user['email'] ?></p>
             <p><strong>Prénom:</strong> <?php echo $user['first_name'] ?></p>
             <p><strong>Nom:</strong> <?php echo $user['last_name'] ?></p>
@@ -36,6 +40,7 @@ $query->execute([$_SESSION['ID']]);
 
 <footer>
      <div>
+        <?php echo $_SESSION['ID'] ?>
         <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
      </div>
 </footer>

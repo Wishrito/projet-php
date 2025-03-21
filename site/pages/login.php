@@ -1,28 +1,30 @@
 <?php
 const ACCESS_ALLOWED = true;
-require './config.php'; // Inclure la connexion à la base de données
+require_once './config.php'; // Inclure la connexion à la base de données
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
+    $username = $_POST['username'];
     $password = $_POST['password'];
     $user_type = $_POST['user_type'];
     $request = "";
     switch ($user_type) {
         case 'patient':
-            $request = "SELECT id, email, first_name, password FROM user_type WHERE email = '?'";
+            $request = "SELECT id, email, first_name, password FROM patient WHERE username = ?";
         case 'medical_staff':
-            $request = "SELECT id, email, first_name, password FROM medical_staff WHERE email = '?'";
+            $request = "SELECT id, email, first_name, password FROM medical_staff WHERE username = ?";
     }
     // Requête préparée pour sélectionner l'utilisateur
     $requete = $pdo->prepare($request);
-    $requete->execute([$email]);
+    $requete->execute([$username]);
     $user = $requete->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($password, $user['password'])) {
         // Connexion réussie, création de la session utilisateur
-        $_SESSION['email'] = $user['email'];
+        $_SESSION['username'] = $user['username'];
         $_SESSION['ID'] = $user['id'];
-        header("Location: ../index.php");
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['user_type'] = $user['user_type'];
+        header("Location: ./index.php");
     } else { ?>
         <div class='notification is-danger'>Email ou mot de passe incorrect.</div>
     <?php }
@@ -40,14 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-    <?php if (!isset($_SESSION['email'])) { ?>
+    <?php if (!isset($_SESSION['username'])) { ?>
         <div class="block">
             <form action="" method="post" class="box">
                 <h1 class="title is-4 has-text-centered">Connexion</h1>
                 <div class="field">
-                    <label class="label" for="email">Email</label>
+                    <label class="label" for="username">Nom d'utilisateur</label>
                     <div class="control">
-                        <input class="input" type="text" id="email" name="email" placeholder="Entrez votre email" required>
+                        <input class="input" type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" title="première lettre du prénom + nom en minuscule" required>
                     </div>
                 </div>
 
