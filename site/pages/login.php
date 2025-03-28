@@ -9,9 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $request = "";
     switch ($user_type) {
         case 'patient':
-            $request = "SELECT id, email, first_name, password FROM patient WHERE username = ?";
+            $request = "SELECT id, email, username, password FROM patient WHERE username = ?";
         case 'medical_staff':
-            $request = "SELECT id, email, first_name, password FROM medical_staff WHERE username = ?";
+            $request = "SELECT id, email, username, password FROM medical_staff WHERE username = ?";
     }
     // Requête préparée pour sélectionner l'utilisateur
     $requete = $pdo->prepare($request);
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="field">
                     <label class="label" for="username">Nom d'utilisateur</label>
                     <div class="control">
-                        <input class="input" type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" title="première lettre du prénom + nom en minuscule" required>
+                        <input class="input" type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" title="Première lettre du prénom + Nom en minuscule." required>
                     </div>
                 </div>
 
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php } ?>
 </body>
 
-<footer>
+<footer class="footer">
      <div>
         <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
      </div>

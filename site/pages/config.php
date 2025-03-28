@@ -110,6 +110,7 @@ try {
 <body>
     <div class="block">
         <header class="header">
+            <img class="img-logo" src="../src/img/logo-medical.png" width="95">
             <a href="<?php echo $site->baseUrl() . 'index.php'; ?>" class="header-logo">Accueil</a>
             <nav class="header-menu">
                 <?php

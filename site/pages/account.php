@@ -8,11 +8,9 @@ if (!isset($_SESSION['ID'])) {
     exit();
 }
 $user_type = $_SESSION['user_type'];
-$query = $pdo->prepare("SELECT ID, username, email, first_name, last_name, birth_date, leaving_date, floor_lvl, admission_date FROM $user_type WHERE ID = ? ");
+$query = $pdo->prepare("SELECT ID, username, password, email, first_name, last_name, birth_date, leaving_date, floor_lvl, admission_date FROM $user_type WHERE ID = ? ");
 $query->execute([$_SESSION['ID']]);
 $user = $query->fetch(PDO::FETCH_ASSOC);
-
-
 ?>
 
 <head>
@@ -26,6 +24,7 @@ $user = $query->fetch(PDO::FETCH_ASSOC);
         <div class="content">
             <p><strong>Identifiant:</strong> <?php echo $user['ID'] ?></p>
             <p><strong>Nom d'utilisateur:</strong> <?php echo $user['username'] ?></p>
+            <p><strong>Mot de Passe:</strong> <?php echo $user['password'] ?></p>
             <p><strong>Email:</strong> <?php echo $user['email'] ?></p>
             <p><strong>Prénom:</strong> <?php echo $user['first_name'] ?></p>
             <p><strong>Nom:</strong> <?php echo $user['last_name'] ?></p>
@@ -38,7 +37,7 @@ $user = $query->fetch(PDO::FETCH_ASSOC);
     <a href="logout.php" class="button is-danger">Déconnexion</a>
 </body>
 
-<footer>
+<footer class="footer">
      <div>
         <?php echo $_SESSION['ID'] ?>
         <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>

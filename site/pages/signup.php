@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </section>
 </body>
 
-<footer>
+<footer class="footer">
     <div>
         <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
     </div>

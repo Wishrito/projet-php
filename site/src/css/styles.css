@@ -41,17 +41,29 @@
 .header-menu .a:hover {
     color: #3273dc;
 }
+
+main {
+    padding-top: 80px; /* Pour éviter que le header ne cache le contenu */
+    text-align: center;
+}
+
+
 .footer {
     background-color: #333;
-    display: flex;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
-    margin-top: 2rem;
-    height: 500px;
-    width: 500px;
-    margin-bottom:30px;
+    width: 100%; /* Assure que le footer prend toute la largeur */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center; /* Centre le texte */
+    align-items: center;
 }
+
 .footer .p {
     margin: 0;
+    margin-bottom:30px;
+    bottom: 0;
 }

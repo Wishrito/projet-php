@@ -4,7 +4,6 @@ require "./config.php";
 <!DOCTYPE html>
 <html lang="fr">
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +12,17 @@ require "./config.php";
 
 <body>
 
-</body>
+    <main>
+        
+        <h1>Votre santé, notre priorité</h1>
+    </main>
 
-<footer>
-     <div>
-        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
-     </div>
-</footer>
+    <footer class="footer">
+        <div>
+            <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+</body>
 
 </html>
