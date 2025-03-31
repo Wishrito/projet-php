@@ -8,9 +8,17 @@ if (!isset($_SESSION['ID'])) {
     exit();
 }
 $user_type = $_SESSION['user_type'];
-$query = $pdo->prepare("SELECT ID, username, password, email, first_name, last_name, birth_date, leaving_date, floor_lvl, admission_date FROM $user_type WHERE ID = ? ");
-$query->execute([$_SESSION['ID']]);
-$user = $query->fetch(PDO::FETCH_ASSOC);
+switch ($user_type) {
+    case 'patient':
+        $request = "SELECT * FROM patient WHERE ID = ?";
+    case 'medical_staff':
+        $request = "SELECT * FROM medical_staff WHERE ID = ?";
+    }
+
+$requete = $pdo->prepare($request);
+$requete->execute([$_SESSION ["ID"]]);
+$user = $requete->fetch(PDO::FETCH_ASSOC);
+
 ?>
 
 <head>
