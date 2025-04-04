@@ -8,6 +8,7 @@ if (!isset($_SESSION['ID'])) {
     exit();
 }
 $user_type = $_SESSION['user_type'];
+$request = "";
 switch ($user_type) {
     case 'patient':
         $request = "SELECT * FROM patient WHERE ID = ?";
