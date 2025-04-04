@@ -105,13 +105,15 @@ try {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="../src/css/styles.css">
     <link rel="stylesheet" href="../src/css/form.css">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../src/img/logo_medical.png">
 </head>
 
 <body>
     <div class="block">
         <header class="header">
-            <img class="img-logo" src="../src/img/logo-medical.png" width="95">
+            <a href="<?php echo $site->baseUrl() . 'index.php'; ?>" class="header-logo">
+                <img class="img-logo" alt="logo de l'application" src="../src/img/logo_medical.png" width="95">
+            </a>
             <a href="<?php echo $site->baseUrl() . 'index.php'; ?>" class="header-logo">Accueil</a>
             <nav class="header-menu">
                 <?php
