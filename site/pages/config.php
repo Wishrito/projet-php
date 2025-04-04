@@ -121,7 +121,8 @@ try {
 
                 <?php } else { ?>
                             <a href="<?php echo $base_url . 'account.php'; ?>" class="button is-primary is-light">Mon compte</a>
-                        <a href="<?php echo $base_url . 'logout.php'; ?>" class="button is-danger is-light">Se déconnecter</a>
+                            <a href="<?php echo $base_url . 'inbox.php'; ?>" class="button is-primary is-light">Messagerie</a>
+                            <a href="<?php echo $base_url . 'logout.php'; ?>" class="button is-danger is-light">Se déconnecter</a>
                     <?php } ?>
             </nav>
             </header>
