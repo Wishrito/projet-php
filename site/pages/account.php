@@ -2,55 +2,79 @@
 const ACCESS_ALLOWED = true;
 include_once './config.php';
 
-
 if (!isset($_SESSION['ID'])) {
     header('Location: login.php');
     exit();
 }
+
 $user_type = $_SESSION['user_type'];
 $request = "";
-switch ($user_type) {
-    case 'patient':
-        $request = "SELECT * FROM patient WHERE ID = ?";
-    case 'medical_staff':
-        $request = "SELECT * FROM medical_staff WHERE ID = ?";
-    }
+
+if ($user_type === 'patient') {
+    $request = "SELECT * FROM patient WHERE ID = ?";
+} elseif ($user_type === 'medical_staff') {
+    $request = "SELECT ms.*, s.libelle as service_name, j.libelle as job_name
+                FROM medical_staff ms
+                LEFT JOIN service s ON ms.service = s.ID
+                LEFT JOIN job j ON ms.job = j.ID
+                WHERE ms.ID = ?";
+} else {
+    // Garde-fou au cas où
+    die("Type d'utilisateur inconnu.");
+}
 
 $requete = $pdo->prepare($request);
-$requete->execute([$_SESSION ["ID"]]);
+$requete->execute([$_SESSION['ID']]);
 $user = $requete->fetch(PDO::FETCH_ASSOC);
-
 ?>
 
+<!DOCTYPE html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <title><?php echo $site->siteName(); ?> - Mon compte</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $site->siteName() ?> - Compte</title>
 </head>
 <body>
-    <div class="block">
-        <h1 class="title is-4 has-text-centered">Mon compte</h1>
-        <div class="content">
-            <p><strong>Identifiant:</strong> <?php echo $user['ID'] ?></p>
-            <p><strong>Nom d'utilisateur:</strong> <?php echo $user['username'] ?></p>
-            <p><strong>Mot de Passe:</strong> <?php echo $user['password'] ?></p>
-            <p><strong>Email:</strong> <?php echo $user['email'] ?></p>
-            <p><strong>Prénom:</strong> <?php echo $user['first_name'] ?></p>
-            <p><strong>Nom:</strong> <?php echo $user['last_name'] ?></p>
-            <p><strong>Date de naissance:</strong> <?php echo $user['birth_date'] ?></p>
-            <p><strong>Date d'admission:</strong> <?php echo $user['admission_date'] ?></p>
-            <p><strong>Date de sortie:</strong> <?php echo $user['leaving_date'] ?></p>
-            <p><strong>Etage:</strong> <?php echo $user['floor_lvl'] ?></p>
+    <section class="section">
+        <div class="container">
+            <div class="box has-text-centered">
+                <figure class="image is-128x128 is-inline-block mb-4">
+                    <img class="is-rounded" src="<?php echo htmlspecialchars($user['profile_pic'] ?? 'img/profile_pics/default.png'); ?>" alt="Photo de profil">
+                </figure>
+                <h1 class="title is-4">Mon compte</h1>
+                <div class="content has-text-left is-size-5 mt-5">
+                    <p><strong>Nom d'utilisateur:</strong> <?php echo $user['username'] ?? 'N/A'; ?></p>
+                    <p><strong>Email:</strong> <?php echo $user['email']; ?></p>
+                    <p><strong>Prénom:</strong> <?php echo $user['first_name']; ?></p>
+                    <p><strong>Nom:</strong> <?php echo $user['last_name']; ?></p>
+                    <p><strong>Date de naissance:</strong> <?php echo $user['birth_date']; ?></p>
+
+                    <?php if ($user_type === 'patient'): ?>
+                        <p><strong>Date d'admission:</strong> <?php echo $user['admission_date']; ?></p>
+                        <p><strong>Date de sortie:</strong> <?php echo $user['leaving_date'] ?? 'En cours'; ?></p>
+                        <p><strong>Étage:</strong> <?php echo $user['floor_lvl']; ?></p>
+                    <?php elseif ($user_type === 'medical_staff'): ?>
+                        <p><strong>Date d'embauche:</strong> <?php echo $user['hiring_date']; ?></p>
+                        <p><strong>Date de départ:</strong> <?php echo $user['leaving_date'] ?? 'En poste'; ?></p>
+                        <p><strong>Service:</strong> <?php echo $user['service_name'] ?? 'Non renseigné'; ?></p>
+                        <p><strong>Poste:</strong> <?php echo $user['job_name'] ?? 'Non renseigné'; ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <div class="buttons is-centered mt-4">
+                    <a href="logout.php" class="button is-danger">Déconnexion</a>
+                </div>
+            </div>
         </div>
-    </div>
-    <a href="logout.php" class="button is-danger">Déconnexion</a>
+    </section>
 </body>
 
+
 <footer class="footer">
-     <div>
-        <?php echo $_SESSION['ID'] ?>
+    <div>
         <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
-     </div>
+    </div>
 </footer>
 
 </html>

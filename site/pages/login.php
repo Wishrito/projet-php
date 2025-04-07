@@ -9,10 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $request = "";
     switch ($user_type) {
         case 'patient':
-            $request = "SELECT id, email, username, password FROM patient WHERE username = ?";
+            $request = "SELECT id, email, username, password, 'patient' AS user_type FROM patient WHERE username = ?";
+            break;
         case 'medical_staff':
-            $request = "SELECT id, email, username, password FROM medical_staff WHERE username = ?";
-    }
+            $request = "SELECT id, email, username, password, 'medical_staff' AS user_type FROM medical_staff WHERE username = ?";
+            break;
+    }    
     // Requête préparée pour sélectionner l'utilisateur
     $requete = $pdo->prepare($request);
     $requete->execute([$username]);

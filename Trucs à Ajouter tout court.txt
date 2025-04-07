@@ -1,0 +1,6 @@
+-En tant que personnel médical, avoir accès a une liste des patients dont on est responsable, et pouvoir modifier leurs 
+données médicales (date de sortie, étage, dossier médical(notes, diagnosis, record_date, doctor_id(en cas de changement de service)))
+-Pareil pour les consultations, avoir accès a un planning, et pouvoir noter le debrief facilement
+-Un patient doit recevoir un mail lorsqu'un rendez-vous lui est attribué, lui indiquant le jour et l'heure de celui-ci.
+-Faire marcher la connexion et l'affichage du profil utilisateur. (Presque Bon)
+-Sur la page account, permettre a l'utilisateur de choisir une nouvelle photo parmi un choix défini entre patient et staff.
