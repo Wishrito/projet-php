@@ -21,7 +21,7 @@ USE `crm_hopital`;
 
 -- Listage de la structure de table crm_hopital. consultation
 CREATE TABLE IF NOT EXISTS `consultation` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `debrief` text NOT NULL,
   `patient_id` int NOT NULL,
   `medical_staff_id` int NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `job` (
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.job : ~0 rows (environ)
+-- Listage des données de la table crm_hopital.job : ~72 rows (environ)
 DELETE FROM `job`;
 INSERT INTO `job` (`ID`, `libelle`) VALUES
 	(1, 'représentant Santé Publique France'),
@@ -155,22 +155,23 @@ CREATE TABLE IF NOT EXISTS `medical_staff` (
   `hiring_date` date DEFAULT NULL,
   `service` int DEFAULT NULL,
   `job` int DEFAULT NULL,
-  `profile_pic` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'img/profile_pics/default.png',
+  `profile_pic` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT './src/img/profile_pics/default.png',
   PRIMARY KEY (`ID`) USING BTREE,
   KEY `fk_staff_service` (`service`),
   KEY `fk_staff_job` (`job`),
   CONSTRAINT `fk_staff_job` FOREIGN KEY (`job`) REFERENCES `job` (`ID`),
   CONSTRAINT `fk_staff_service` FOREIGN KEY (`service`) REFERENCES `service` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table crm_hopital.medical_staff : ~1 rows (environ)
 DELETE FROM `medical_staff`;
 INSERT INTO `medical_staff` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `leaving_date`, `hiring_date`, `service`, `job`, `profile_pic`) VALUES
-	(6, 'a@a', '$2y$10$UjErT5ubRHDAFkzzQl93Z.flfmVN098.BOz6Yt2l3k.QHI8Fuuu66', 'aaa', 'a', 'aa', NULL, NULL, NULL, NULL, NULL, NULL);
+	(6, 'a@a', '$2y$10$UjErT5ubRHDAFkzzQl93Z.flfmVN098.BOz6Yt2l3k.QHI8Fuuu66', 'aaa', 'a', 'aa', NULL, NULL, NULL, NULL, NULL, NULL),
+	(7, 'b@b', '$2y$10$f5zaZleD6ufRsbPb9woLhuYOExRz4WvtgtS7C3eVU7csxq0XiNVTm', 'bb', 'b', 'b', NULL, NULL, NULL, NULL, NULL, './src/img/profile_pics/default.png');
 
 -- Listage de la structure de table crm_hopital. message
 CREATE TABLE IF NOT EXISTS `message` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `content` text NOT NULL,
   `file` varchar(200) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -185,21 +186,23 @@ DELETE FROM `message`;
 -- Listage de la structure de table crm_hopital. patient
 CREATE TABLE IF NOT EXISTS `patient` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email` varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `username` varchar(60) DEFAULT NULL,
-  `first_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `last_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `birth_date` date DEFAULT NULL,
   `admission_date` timestamp NULL DEFAULT NULL,
   `leaving_date` timestamp NULL DEFAULT NULL,
   `floor_lvl` int DEFAULT '0',
   `profile_pic` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'img/profile_pics/default.png',
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table crm_hopital.patient : ~1 rows (environ)
 DELETE FROM `patient`;
+INSERT INTO `patient` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `admission_date`, `leaving_date`, `floor_lvl`, `profile_pic`) VALUES
+	(5, 'a@aa', '$2y$10$qhanZjKdLu/4bBjX9tMtruHKQLv3sw71ney7CEw6uoyM1DgNoy3va', 'aa', 'a', 'a', NULL, NULL, NULL, 0, 'img/profile_pics/default.png');
 
 -- Listage de la structure de table crm_hopital. service
 CREATE TABLE IF NOT EXISTS `service` (
