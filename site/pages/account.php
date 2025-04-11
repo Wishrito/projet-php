@@ -42,9 +42,8 @@ $user = $requete->fetch(PDO::FETCH_ASSOC);
                 <figure class="image is-128x128 is-inline-block mb-4">
                     <img class="is-rounded" src="<?php echo htmlspecialchars($user['profile_pic'] ?? 'img/profile_pics/default.png'); ?>" alt="Photo de profil">
                 </figure>
-                <h1 class="title is-4">Mon compte</h1>
+                <h1 class="title is-4"> </strong> <?php echo $user['username'] ?? 'N/A'; ?></h1>
                 <div class="content has-text-left is-size-5 mt-5">
-                    <p><strong>Nom d'utilisateur:</strong> <?php echo $user['username'] ?? 'N/A'; ?></p>
                     <p><strong>Email:</strong> <?php echo $user['email']; ?></p>
                     <p><strong>Prénom:</strong> <?php echo $user['first_name']; ?></p>
                     <p><strong>Nom:</strong> <?php echo $user['last_name']; ?></p>
