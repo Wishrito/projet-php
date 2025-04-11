@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_type = $_POST['user_type'];
     $lastname = $_POST['lastname'];
     $firstname = $_POST['firstname'];
+    $birth_date = $_POST['birth_date'];
     $username = strtolower($firstname[0]) . strtolower(str_replace(' ', '-', $lastname));
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hachage du mot de passe
     try {
@@ -23,8 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php
     } else {
         // Insérer l'utilisateur dans la base de données
-        $requete = $pdo->prepare("INSERT INTO $user_type (first_name, last_name, username, email, password) VALUES (?, ?, ?, ?, ?)");
-        if ($requete->execute([$firstname, $lastname, $username, $email, $password])) {
+        $requete = $pdo->prepare("INSERT INTO $user_type (first_name, last_name, username, email, birth_date, password) VALUES (?, ?, ?, ?, ?, ?)");
+        if ($requete->execute([$firstname, $lastname, $username, $email, $birth_date, $password])) {
             header("Location: ./index.php");
             exit();
         } else {
@@ -34,6 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+date_default_timezone_set('Europe/Paris');
+$current_date = date('Y-m-d'); // Format YYYY-MM-DD
 ?>
 
 <head>
@@ -74,6 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input class="input" type="email" name="email" placeholder="Entrez votre email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Format d'email invalide.">
                     </div>
                 </div>
+
+                <div class="field">
+                    <label for="birth_date" class="label">Date de Naissance</label>
+                    <div id="date" class="control">
+                        <input class="date" type="date" name="birth_date" max="<?= $current_date ?>" required>
+                    </div>
+                </div>
+
                 <div class="form-row">
                     <div class="field">
                         <label for="password" class="label">Mot de passe</label>

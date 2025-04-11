@@ -42,7 +42,7 @@ $user = $requete->fetch(PDO::FETCH_ASSOC);
                 <figure class="image is-128x128 is-inline-block mb-4">
                     <img class="is-rounded" src="<?php echo htmlspecialchars($user['profile_pic'] ?? 'img/profile_pics/default.png'); ?>" alt="Photo de profil">
                 </figure>
-                <h1 class="title is-4"> </strong> <?php echo $user['username'] ?? 'N/A'; ?></h1>
+                <h1 class="title is-4"></strong> <?php echo $user['username'] ?? 'N/A'; ?></h1>
                 <div class="content has-text-left is-size-5 mt-5">
                     <p><strong>Email:</strong> <?php echo $user['email']; ?></p>
                     <p><strong>Prénom:</strong> <?php echo $user['first_name']; ?></p>
@@ -51,13 +51,11 @@ $user = $requete->fetch(PDO::FETCH_ASSOC);
 
                     <?php if ($user_type === 'patient'): ?>
                         <p><strong>Date d'admission:</strong> <?php echo $user['admission_date']; ?></p>
-                        <p><strong>Date de sortie:</strong> <?php echo $user['leaving_date'] ?? 'En cours'; ?></p>
                         <p><strong>Étage:</strong> <?php echo $user['floor_lvl']; ?></p>
                     <?php elseif ($user_type === 'medical_staff'): ?>
                         <p><strong>Date d'embauche:</strong> <?php echo $user['hiring_date']; ?></p>
-                        <p><strong>Date de départ:</strong> <?php echo $user['leaving_date'] ?? 'En poste'; ?></p>
-                        <p><strong>Service:</strong> <?php echo $user['service_name'] ?? 'Non renseigné'; ?></p>
-                        <p><strong>Poste:</strong> <?php echo $user['job_name'] ?? 'Non renseigné'; ?></p>
+                        <p><strong>Service:</strong> <?php echo $user['service_name']; ?></p>
+                        <p><strong>Poste:</strong> <?php echo $user['job_name']; ?></p>
                     <?php endif; ?>
                 </div>
 
