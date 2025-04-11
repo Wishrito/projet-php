@@ -165,9 +165,9 @@ CREATE TABLE IF NOT EXISTS `medical_staff` (
 
 -- Listage des données de la table crm_hopital.medical_staff : ~1 rows (environ)
 DELETE FROM `medical_staff`;
-INSERT INTO `medical_staff` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `leaving_date`, `hiring_date`, `service`, `job`, `profile_pic`) VALUES
-	(6, 'a@a', '$2y$10$UjErT5ubRHDAFkzzQl93Z.flfmVN098.BOz6Yt2l3k.QHI8Fuuu66', 'aaa', 'a', 'aa', NULL, NULL, NULL, NULL, NULL, NULL),
-	(7, 'b@b', '$2y$10$f5zaZleD6ufRsbPb9woLhuYOExRz4WvtgtS7C3eVU7csxq0XiNVTm', 'bb', 'b', 'b', NULL, NULL, NULL, NULL, NULL, './src/img/profile_pics/default.png');
+INSERT INTO `medical_staff` (`email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `leaving_date`, `hiring_date`, `service`, `job`, `profile_pic`) VALUES
+	('a@a', '$2y$10$UjErT5ubRHDAFkzzQl93Z.flfmVN098.BOz6Yt2l3k.QHI8Fuuu66', 'aaa', 'a', 'aa', NULL, NULL, NULL, NULL, NULL, NULL),
+	('b@b', '$2y$10$f5zaZleD6ufRsbPb9woLhuYOExRz4WvtgtS7C3eVU7csxq0XiNVTm', 'bb', 'b', 'b', NULL, NULL, NULL, NULL, NULL, './src/img/profile_pics/default.png');
 
 -- Listage de la structure de table crm_hopital. message
 CREATE TABLE IF NOT EXISTS `message` (

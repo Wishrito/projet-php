@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         case 'medical_staff':
             $request = "SELECT id, email, username, password, 'medical_staff' AS user_type FROM medical_staff WHERE username = ?";
             break;
-    }    
+    }
     // Requête préparée pour sélectionner l'utilisateur
     $requete = $pdo->prepare($request);
     $requete->execute([$username]);

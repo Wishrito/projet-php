@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="field">
                             <label for="lastname"class="label">Nom</label>
                             <div id="lastname" class="control">
-                                <input class="input" type="text" name="lastname" placeholder="Entrez votre nom d'utilisateur"
+                                <input class="input" type="text" name="lastname" placeholder="Entrez votre nom"
                                     required>
                             </div>
                         </div>
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="field">
                             <label for="name" class="label">Prénom</label>
                             <div id="name" class="control">
-                                <input class="input" type="text" name="firstname" placeholder="Entrez votre nom d'utilisateur"
+                                <input class="input" type="text" name="firstname" placeholder="Entrez votre prénom"
                                     required>
                             </div>
                         </div>
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="field">
                     <label for="mail" class="label">Email</label>
                     <div id="mail" class="control">
-                        <input class="input" type="email" name="email" placeholder="Entrez votre email" required>
+                        <input class="input" type="email" name="email" placeholder="Entrez votre email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Format d'email invalide.">
                     </div>
                 </div>
                 <div class="form-row">
