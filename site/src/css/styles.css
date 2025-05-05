@@ -67,3 +67,49 @@ main {
     margin-bottom:30px;
     bottom: 0;
 }
+        
+.avatar-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr); /* mobile default */
+}
+
+@media screen and (min-width: 600px) {
+    .avatar-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .avatar-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .avatar-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+.avatar-option {
+    text-align: center;
+}
+
+.avatar-option input[type="radio"] {
+    display: none;
+}
+
+.avatar-option img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    object-fit: cover;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.avatar-option input[type="radio"]:checked + img {
+    border-color: #00d1b2;
+}

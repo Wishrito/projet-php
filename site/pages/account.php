@@ -60,6 +60,7 @@ $user = $requete->fetch(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="buttons is-centered mt-4">
+                    <a href="edit_account.php" class="button is-info">Modifier mes informations</a>
                     <a href="logout.php" class="button is-danger">Déconnexion</a>
                 </div>
             </div>
