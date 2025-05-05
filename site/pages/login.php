@@ -26,6 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['ID'] = $user['id'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['user_type'] = $user['user_type'];
+        if ($user['user_type'] == "medical_staff") {
+            $_SESSION['job'] = $user['job'];
+        }
         header("Location: ./index.php");
     } else { ?>
         <div class='notification is-danger'>Email ou mot de passe incorrect.</div>
