@@ -9,6 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+
 class SiteConfig
 {
     private $attributes = [
@@ -122,7 +123,7 @@ try {
                         <a href="<?php echo $base_url . 'login.php'; ?>" class="button is-link is-light">Connexion</a>
 
                 <?php } else { ?>
-                    <?php if (!isset($_SESSION['job']) && $_SESSION['job'] == 75) { ?>
+                    <?php if (isset($_SESSION['job']) && $_SESSION['job'] == "75") { ?>
                         <a href="<?php echo $base_url . 'signup.php'; ?>" class="button is-success is-light">Inscription</a>
                     <?php } ?>
                             <a href="<?php echo $base_url . 'account.php'; ?>" class="button is-primary is-light">Mon compte</a>

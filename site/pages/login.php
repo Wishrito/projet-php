@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $request = "SELECT id, email, username, password, 'patient' AS user_type FROM patient WHERE username = ?";
             break;
         case 'medical_staff':
-            $request = "SELECT id, email, username, password, 'medical_staff' AS user_type FROM medical_staff WHERE username = ?";
+            $request = "SELECT id, email, username, password, 'medical_staff' AS user_type, job, service FROM medical_staff WHERE username = ?";
             break;
     }
     // Requête préparée pour sélectionner l'utilisateur
@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['user_type'] = $user['user_type'];
         if ($user['user_type'] == "medical_staff") {
             $_SESSION['job'] = $user['job'];
+            $_SESSION['service'] = $user['service'];
         }
         header("Location: ./index.php");
     } else { ?>

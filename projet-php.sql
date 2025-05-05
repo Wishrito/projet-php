@@ -179,8 +179,9 @@ CREATE TABLE IF NOT EXISTS `message` (
   `content` text NOT NULL,
   `file` varchar(200) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `sender` int NOT NULL,
-  `receiver` int NOT NULL,
+  `sender_id` int NOT NULL,
+  `expediteur_id` INT NOT NULL,
+  FOREIGN KEY (expediteur_id) REFERENCES Utilisateur(id)
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
