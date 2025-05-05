@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $birth_date = $_POST['birth_date'] ?? '';
     $profile_pic_path = $_POST['profile_pic'] ?? $user['profile_pic'];
 
-    // Mise à jour des infos
+    // Mise à jour des infos si aucune erreur
     if (empty($errors)) {
         $update_sql = "UPDATE " . ($user_type === 'patient' ? 'patient' : 'medical_staff') . "
                        SET first_name = ?, last_name = ?, email = ?, birth_date = ?, profile_pic = ?
