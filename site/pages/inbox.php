@@ -11,7 +11,34 @@ require_once "./config.php";
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <title><?php echo $site->siteName() ?> - Messagerie</title>
+    <?php if (isset($_GET['id']) && isset($_GET['type'])) {
+        // Si une conversation est sélectionnée
+        $id = $_GET['id'];
+        $type = $_GET['type'];
+        // Vérifie si l'utilisateur a accès à cette conversation
+        if (!in_array($type, ['patient', 'medical_staff'])) {
+            echo "<p>Type d'utilisateur invalide.</p>";
+            exit;
+        }
+        $stmt = $pdo->prepare("SELECT * FROM $type WHERE id = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($user) {
+            $last_name = $user['last_name'];
+            $first_name = $user['username'];
+            $full_name = "";
+            if ($last_name == $first_name) {
+                $full_name = $first_name;
+            } else {
+                $full_name = "$last_name $first_name";
+            }
+            ?>
+            <title><?php echo $site->siteName() ?> - Conversation avec <?php echo $full_name ?></title> <?php
+        } else { ?>
+                        <title><?php echo $site->siteName() ?> - Messagerie</title>
+    <?php }
+    } ?>
 </head>
 
 <?php
