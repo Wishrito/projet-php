@@ -36,9 +36,14 @@ require_once "./config.php";
             ?>
             <title><?php echo $site->siteName() ?> - Conversation avec <?php echo $full_name ?></title> <?php
         } else { ?>
-                        <title><?php echo $site->siteName() ?> - Messagerie</title>
+                    <title><?php echo $site->siteName() ?> - Messagerie</title>
     <?php }
-    } ?>
+    } else {
+        // Si aucune conversation n'est sélectionnée
+        ?>
+    <title><?php echo $site->siteName() ?> - Messagerie</title>
+    <?php }
+    ?>
 </head>
 
 <?php
