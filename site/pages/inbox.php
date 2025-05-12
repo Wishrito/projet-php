@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php const ACCESS_ALLOWED = true;
 require_once "./config.php";
-
 ?>
 
 <head>
@@ -126,6 +125,17 @@ foreach ($convs as $conv) {
             </li>
         <?php endforeach; ?>
         </ul>
+        <div class="sidebar-footer">
+            
+            <?php switch ($_SESSION['user_type']):
+                case 'patient': ?>
+                    <p>Vous pouvez également consulter vos messages avec votre médecin.</p>
+                    <?php break;
+                case 'medical_staff': ?>
+                    <a href="new_conv.php" class="button">Nouvelle conversation</a>
+                    <?php break;
+            endswitch;
+            ?>
     </nav>
     <?php if (isset($_GET['id']) && isset($_GET['type'])) {
         // Si une conversation est sélectionnée
@@ -152,14 +162,24 @@ foreach ($convs as $conv) {
             $stmt->bindValue(':receiver_type', $type, PDO::PARAM_STR);
             $stmt->execute();
             $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($messages as $message): ?>
-                                            <div class="chat-container">
-                                            <div class="message <?= ($_SESSION['ID'] == $message['sender_id']) ? 'sent' : 'received' ?>">
-                                            <p class="message-date"><?= htmlspecialchars($message['date']) ?></p>
-                                                                                <p class="message-text"><?= htmlspecialchars($message['content']) ?></p>
-                                                                            </div>
-                                                    <?php endforeach; ?>
-                        </div>
+            foreach ($messages as $message):
+                echo "<div class='chat-container'>"; ?>
+                                                            <div class="message <?= ($_SESSION['ID'] == $message['sender_id']) ? 'sent' : 'received' ?>">
+    <p class="message-text"><?= htmlspecialchars($message['content']) ?></p>
+    <p class="message-date"><?= htmlspecialchars($message['date']) ?></p>
+    
+    <?php if ($_SESSION['ID'] == $message['sender_id']): ?>
+        <form method="POST" action="delete_message.php" class="delete-form">
+            <input type="hidden" name="message_id" value="<?= $message['ID'] ?>">
+            <input type="hidden" name="receiver_id" value="<?= $id ?>">
+            <input type="hidden" name="receiver_type" value="<?= $type ?>">
+            <button type="submit" class="delete-button" title="Supprimer ce message">&times;</button>
+        </form>
+    <?php endif; ?>
+</div>
+
+<?php endforeach; ?>
+</div>
 
 <?php
         } else {
@@ -169,21 +189,22 @@ foreach ($convs as $conv) {
 <div class="main-content">
     <p>Bienvenue dans votre messagerie !</p>
     <p>Vous pouvez consulter vos conversations en cliquant sur les utilisateurs à gauche.</p>
-    <?php switch ($_SESSION['user_type']):
-        case 'patient': ?>
-            <p>Vous pouvez également consulter vos messages avec votre médecin.</p>
-            <?php break; ?>
-        <?php case 'medical_staff': ?>
-            <p>Vous pouvez également consulter vos messages avec vos patients.</p>
-            <a href="new_message.php" class="button">Nouvelle conversation</a>
-            <?php break; ?>
-    <?php endswitch;
+            <?php }
+    if (isset($_GET['id']) && isset($_GET['type'])) { ?>
+                <div class="message-form">
+                    <form method="POST" action="send_message.php">
+                        <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
+                        <input type="hidden" name="receiver_type" value="<?= htmlspecialchars($type) ?>">
+                        <textarea name="message" placeholder="Écrire un message..." required></textarea>
+                        <button type="submit">Envoyer</button>
+                    </form>
+                </div><?php
     } ?>
-</body>
+    </body>
 
 <footer class="footer">
      <div>
-        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+        <p>© 2025 <?= $site->siteName() ?>. Tous droits réservés.</p>
      </div>
      <script>
     const chatContainer = document.querySelector('.chat-container');

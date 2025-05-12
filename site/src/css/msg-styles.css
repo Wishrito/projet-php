@@ -110,6 +110,8 @@
     overflow-wrap: break-word;
     white-space: pre-wrap;
     /* Permet les retours à la ligne naturels ET manuels */
+    /* Nécessaire pour positionner le bouton */
+        transition: background-color 0.2s ease;
 }
 
 /* Messages envoyés par l'utilisateur */
@@ -136,10 +138,43 @@
     color: #222;
 }
 
-/* Date du message */
-.message-date {
-    margin-top: 5px;
-    font-size: 11px;
-    color: #666;
-    text-align: right;
+.delete-form {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    display: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+
+.message:hover .delete-form {
+    display: block;
+    /* Affiché au survol de la bulle */
+}
+
+.delete-button {
+    background-color: #ff4d4f;
+    border: none;
+    color: white;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: #d9363e;
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    background-color: #1a252f;
+    border-top: 1px solid #34495e;
+    text-align: center;
+    font-size: 0.9rem;
 }
