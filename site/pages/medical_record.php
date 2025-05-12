@@ -64,6 +64,7 @@ $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
         <?php if ($user_type === 'medical_staff'): ?>
+            <h1 class="title is-4">Dossiers Médicaux</h1>
             <h2 class="subtitle">Créer un nouveau dossier</h2>
             <form method="post" class="box">
                 <div class="field">
@@ -105,7 +106,6 @@ $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <?php if ($_SESSION['user_type'] === 'patient') : ?>
               <h1 class="title is-4">Mon dossier médical</h1>
           <?php else : ?>
-              <h1 class="title is-4">Dossiers Médicaux</h1>
               <h2 class="subtitle is-5">Liste des dossiers</h2>
           <?php endif; ?>
 
