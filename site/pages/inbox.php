@@ -162,12 +162,13 @@ foreach ($convs as $conv) {
             $stmt->bindValue(':receiver_type', $type, PDO::PARAM_STR);
             $stmt->execute();
             $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($messages as $message):
-                echo "<div class='chat-container'>"; ?>
-                                                            <div class="message <?= ($_SESSION['ID'] == $message['sender_id']) ? 'sent' : 'received' ?>">
+            echo "<div class='chat-container'>";
+
+            foreach ($messages as $message): ?>
+                    <div class="message <?= ($_SESSION['ID'] == $message['sender_id']) ? 'sent' : 'received' ?>">
+                    <p class="message-date"><?= htmlspecialchars($message['date']) ?></p>
     <p class="message-text"><?= htmlspecialchars($message['content']) ?></p>
-    <p class="message-date"><?= htmlspecialchars($message['date']) ?></p>
-    
+
     <?php if ($_SESSION['ID'] == $message['sender_id']): ?>
         <form method="POST" action="delete_message.php" class="delete-form">
             <input type="hidden" name="message_id" value="<?= $message['ID'] ?>">
