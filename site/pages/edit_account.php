@@ -31,37 +31,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $birth_date = $_POST['birth_date'] ?? '';
     $profile_pic_path = $_POST['profile_pic'] ?? $user['profile_pic'];
+    $service_id = $_POST['service'] ?? $user['service'];
+    $job_id = $_POST['job'] ?? $user['job'];
 
-    // Mise à jour des infos si aucune erreur
+    // Mise à jour des informations utilisateur
     if (empty($errors)) {
         $update_sql = "UPDATE " . ($user_type === 'patient' ? 'patient' : 'medical_staff') . "
-                       SET first_name = ?, last_name = ?, email = ?, birth_date = ?, profile_pic = ?
+                       SET first_name = ?, last_name = ?, email = ?, birth_date = ?, profile_pic = ?, service = ?, job = ?
                        WHERE ID = ?";
         $stmt = $pdo->prepare($update_sql);
-        $stmt->execute([$first_name, $last_name, $email, $birth_date, $profile_pic_path, $user_id]);
+        $stmt->execute([$first_name, $last_name, $email, $birth_date, $profile_pic_path, $service_id, $job_id, $user_id]);
         $success = true;
     }
 
-    // Changement de mot de passe
-    if (!empty($_POST['current_password']) && !empty($_POST['new_password']) && !empty($_POST['confirm_password'])) {
-        $current_password = $_POST['current_password'];
-        $new_password = $_POST['new_password'];
-        $confirm_password = $_POST['confirm_password'];
-
-        if (!password_verify($current_password, $user['password'])) {
-            $errors[] = "Mot de passe actuel incorrect.";
-        } elseif ($new_password !== $confirm_password) {
-            $errors[] = "Le nouveau mot de passe et sa confirmation ne correspondent pas.";
-        } else {
-            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-            $pass_sql = "UPDATE " . ($user_type === 'patient' ? 'patient' : 'medical_staff') . " SET password = ? WHERE ID = ?";
-            $stmt = $pdo->prepare($pass_sql);
-            $stmt->execute([$hashed_password, $user_id]);
-            $success = true;
-        }
-    }
-
-    // Recharger les données
+    // Recharger les données mises à jour
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -98,20 +81,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form method="POST">
-            <div class="field">
-    <label class="label">Photo de profil</label>
-    <div class="avatar-grid">
-        <?php for ($i = 1; $i <= 10; $i++):
-            $img = "../src/img/profile_pics/Staff_$i.png";
-            $checked = ($user['profile_pic'] === $img) ? 'checked' : '';
-        ?>
-        <label class="avatar-option">
-            <input type="radio" name="profile_pic" value="<?= $img ?>" <?= $checked ?>>
-            <img src="<?= $img ?>" alt="Avatar <?= $i ?>">
-        </label>
-        <?php endfor; ?>
-    </div>
-</div>
+                <div class="field">
+                    <label class="label">Photo de profil</label>
+                    <div class="avatar-grid">
+                        <?php for ($i = 1; $i <= 10; $i++):
+                            $img = "../src/img/profile_pics/Staff_$i.png";
+                            $checked = ($user['profile_pic'] === $img) ? 'checked' : '';
+                        ?>
+                        <label class="avatar-option">
+                            <input type="radio" name="profile_pic" value="<?= $img ?>" <?= $checked ?>>
+                            <img src="<?= $img ?>" alt="Avatar <?= $i ?>">
+                        </label>
+                        <?php endfor; ?>
+                    </div>
+                </div>
+
                 <div class="field">
                     <label class="label">Prénom</label>
                     <input class="input" type="text" name="first_name" value="<?= htmlspecialchars($user['first_name']) ?>" required>
@@ -132,8 +116,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input class="input" type="date" name="birth_date" value="<?= htmlspecialchars($user['birth_date']) ?>" required>
                 </div>
 
-                <hr>
+                <div class="field">
+                    <label class="label">Service</label>
+                    <div class="select">
+                        <select name="service" required>
+                            <?php
+                            $service_sql = "SELECT * FROM service";
+                            $service_stmt = $pdo->query($service_sql);
+                            while ($service = $service_stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $selected = ($service['ID'] == $user['service']) ? 'selected' : '';
+                                echo "<option value=\"{$service['ID']}\" {$selected}>{$service['libelle']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
 
+                <div class="field">
+                    <label class="label">Poste</label>
+                    <div class="select">
+                        <select name="job" required>
+                            <?php
+                            $job_sql = "SELECT * FROM job";
+                            $job_stmt = $pdo->query($job_sql);
+                            while ($job = $job_stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $selected = ($job['ID'] == $user['job']) ? 'selected' : '';
+                                echo "<option value=\"{$job['ID']}\" {$selected}>{$job['libelle']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
                 <h2 class="subtitle">Changer le mot de passe</h2>
 
                 <div class="field">

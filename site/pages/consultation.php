@@ -215,17 +215,6 @@ $services = $services_stmt->fetchAll();
             </div>
 
             <div class="form-group">
-                <label for="second">Seconde :</label>
-                <select name="second" id="second" required>
-                    <?php for ($i = 0; $i < 60; $i++): ?>
-                        <option value="<?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>">
-                            <?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>
-                        </option>
-                    <?php endfor; ?>
-                </select>
-            </div>
-
-            <div class="form-group">
                 <label for="debrief">Débrief :</label>
                 <textarea name="debrief" id="debrief" rows="4" required></textarea>
             </div>

@@ -36,9 +36,15 @@ CREATE TABLE IF NOT EXISTS `consultation` (
   CONSTRAINT `FK_consultation_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`ID`),
   CONSTRAINT `FK_consultation_service` FOREIGN KEY (`service_id`) REFERENCES `service` (`ID`),
   CONSTRAINT `FK_consultation_staff` FOREIGN KEY (`medical_staff_id`) REFERENCES `medical_staff` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.consultation : ~0 rows (environ)
+-- Listage des données de la table crm_hopital.consultation : ~4 rows (environ)
+DELETE FROM `consultation`;
+INSERT INTO `consultation` (`ID`, `debrief`, `patient_id`, `medical_staff_id`, `service_id`, `date`) VALUES
+	(1, 'non', 5, 1, 7, '2025-05-11 07:48:56'),
+	(2, 'non', 5, 1, 19, '2025-05-13 07:48:56'),
+	(3, 'oskour', 5, 1, 11, '2025-05-12 22:00:00'),
+	(4, 'bon courage', 5, 1, 7, '2025-03-27 22:59:59');
 
 -- Listage de la structure de table crm_hopital. job
 DROP TABLE IF EXISTS `job`;
@@ -48,8 +54,9 @@ CREATE TABLE IF NOT EXISTS `job` (
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.job : ~76 rows (environ)
-REPLACE INTO `job` (`ID`, `libelle`) VALUES
+-- Listage des données de la table crm_hopital.job : ~77 rows (environ)
+DELETE FROM `job`;
+INSERT INTO `job` (`ID`, `libelle`) VALUES
 	(0, 'Non Renseigné'),
 	(1, 'représentant Santé Publique France'),
 	(2, 'agent de Blanchisserie'),
@@ -131,7 +138,7 @@ REPLACE INTO `job` (`ID`, `libelle`) VALUES
 -- Listage de la structure de table crm_hopital. medical_record
 DROP TABLE IF EXISTS `medical_record`;
 CREATE TABLE IF NOT EXISTS `medical_record` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `record_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `diagnosis` text,
   `doctor_id` int DEFAULT NULL,
@@ -142,9 +149,12 @@ CREATE TABLE IF NOT EXISTS `medical_record` (
   KEY `FK_record_staff` (`doctor_id`),
   CONSTRAINT `FK_record_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`ID`),
   CONSTRAINT `FK_record_staff` FOREIGN KEY (`doctor_id`) REFERENCES `medical_staff` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.medical_record : ~0 rows (environ)
+-- Listage des données de la table crm_hopital.medical_record : ~1 rows (environ)
+DELETE FROM `medical_record`;
+INSERT INTO `medical_record` (`id`, `record_date`, `diagnosis`, `doctor_id`, `patient_id`, `notes`) VALUES
+	(1, '2025-05-12 11:34:00', 'Il va pas bien', 1, 5, 'Vraiment');
 
 -- Listage de la structure de table crm_hopital. medical_staff
 DROP TABLE IF EXISTS `medical_staff`;
@@ -166,21 +176,22 @@ CREATE TABLE IF NOT EXISTS `medical_staff` (
   KEY `fk_staff_job` (`job`),
   CONSTRAINT `fk_staff_job` FOREIGN KEY (`job`) REFERENCES `job` (`ID`),
   CONSTRAINT `fk_staff_service` FOREIGN KEY (`service`) REFERENCES `service` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.medical_staff : ~4 rows (environ)
-REPLACE INTO `medical_staff` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `leaving_date`, `hiring_date`, `service`, `job`, `profile_pic`) VALUES
+-- Listage des données de la table crm_hopital.medical_staff : ~6 rows (environ)
+DELETE FROM `medical_staff`;
+INSERT INTO `medical_staff` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `leaving_date`, `hiring_date`, `service`, `job`, `profile_pic`) VALUES
 	(1, 'admin@gmail.com', '$2y$10$bSCNkA6g9EMxxkHB8gDbVOII0IX0oEniRmWOUm2FDITL3EMSjljPi', 'admin', '', '', '2003-06-01', NULL, NULL, 0, 75, '../src/img/profile_pics/default.png'),
 	(7, 'max.robelin@veniseverteniort.org', '$2y$10$f5zaZleD6ufRsbPb9woLhuYOExRz4WvtgtS7C3eVU7csxq0XiNVTm', 'mrobelin', 'Max', 'Robelin', '2025-12-15', NULL, NULL, 0, 35, '../src/img/profile_pics/default.png'),
 	(8, 'test@test', '$2y$10$8bJdOZm5t62M1Hzc1EPbL.CdowPDsSPAy2tlOdR/oD2kh414sfNza', 'ttest', 'test', 'test', NULL, NULL, NULL, 0, 35, '../src/img/profile_pics/default.png'),
 	(9, 'a@a', '$2y$10$E8ZQuzcGRDgLTSuKl1fAZ.Fs1JAqeUapxJXZ7ScJ9dG04VIOw9hly', 'aa', 'a', 'a', '2003-06-01', NULL, NULL, 0, 0, '../src/img/profile_pics/Staff_4.png'),
-	(12, 'systeme@santeplus.com', '$2y$10$TkGI0uYo1j0nVflBt0vSceB1l0cw.in.8LENCebGUfeQx4dirH9A.', 'ssystème', 'santéplus', 'système', '2025-05-04', NULL, NULL, 0, 0, '../src/img/profile_pics/default.png');
+	(12, 'systeme@santeplus.com', '$2y$10$TkGI0uYo1j0nVflBt0vSceB1l0cw.in.8LENCebGUfeQx4dirH9A.', 'ssystème', 'santéplus', 'système', '2025-05-04', NULL, NULL, 0, 0, '../src/img/profile_pics/default.png'),
+	(13, 'b@bb', '$2y$10$MiL.ZogdKrhvS.F/5B258u9YdAa0eRpR2HY3FZIDpwoPae4UEeamy', 'bb', 'b', 'b', '2025-05-01', NULL, NULL, 0, 0, '../src/img/profile_pics/default.png');
 
 -- Listage de la structure de table crm_hopital. message
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE IF NOT EXISTS `message` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `readed` tinyint(1) NOT NULL DEFAULT '0',
   `content` text NOT NULL,
   `file` varchar(200) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -189,9 +200,10 @@ CREATE TABLE IF NOT EXISTS `message` (
   `receiver_id` int NOT NULL DEFAULT '0',
   `receiver_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table crm_hopital.message : ~0 rows (environ)
+DELETE FROM `message`;
 
 -- Listage de la structure de table crm_hopital. patient
 DROP TABLE IF EXISTS `patient`;
@@ -205,14 +217,14 @@ CREATE TABLE IF NOT EXISTS `patient` (
   `birth_date` date DEFAULT NULL,
   `admission_date` timestamp NULL DEFAULT NULL,
   `leaving_date` timestamp NULL DEFAULT NULL,
-  `floor_lvl` int DEFAULT '0',
   `profile_pic` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '../src/img/profile_pics/default.png',
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.patient : ~0 rows (environ)
-REPLACE INTO `patient` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `admission_date`, `leaving_date`, `floor_lvl`, `profile_pic`) VALUES
-	(5, 'a@aa', '$2y$10$qhanZjKdLu/4bBjX9tMtruHKQLv3sw71ney7CEw6uoyM1DgNoy3va', 'aa', 'a', 'a', NULL, NULL, NULL, 0, '../src/img/profile_pics/default.png');
+-- Listage des données de la table crm_hopital.patient : ~1 rows (environ)
+DELETE FROM `patient`;
+INSERT INTO `patient` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `admission_date`, `leaving_date`, `profile_pic`) VALUES
+	(5, 'a@aa', '$2y$10$qhanZjKdLu/4bBjX9tMtruHKQLv3sw71ney7CEw6uoyM1DgNoy3va', 'aa', 'a', 'a', NULL, NULL, NULL, '../src/img/profile_pics/default.png');
 
 -- Listage de la structure de table crm_hopital. service
 DROP TABLE IF EXISTS `service`;
@@ -223,7 +235,8 @@ CREATE TABLE IF NOT EXISTS `service` (
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table crm_hopital.service : ~21 rows (environ)
-REPLACE INTO `service` (`ID`, `libelle`) VALUES
+DELETE FROM `service`;
+INSERT INTO `service` (`ID`, `libelle`) VALUES
 	(0, 'Non Renseigné'),
 	(1, 'médecine générale'),
 	(2, 'immunologie'),

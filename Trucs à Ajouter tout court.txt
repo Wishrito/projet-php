@@ -1,6 +1,1 @@
--En tant que personnel médical, avoir accès a une liste des patients dont on est responsable, et pouvoir modifier leurs 
-données médicales (date de sortie, étage, dossier médical(notes, diagnosis, record_date, doctor_id(en cas de changement de service)))
--Pareil pour les consultations, avoir accès a un planning, et pouvoir noter le debrief facilement
--Un patient doit recevoir un mail lorsqu'un rendez-vous lui est attribué, lui indiquant le jour et l'heure de celui-ci.
-- ajouter une iframe pour la liste des messages qui se refresh via un bouton
-- pareil avec les convs
+- Un patient doit recevoir un mail lorsqu'un rendez-vous lui est attribué, lui indiquant le jour et l'heure de celui-ci.
