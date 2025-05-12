@@ -113,3 +113,134 @@ main {
 .avatar-option input[type="radio"]:checked + img {
     border-color: #00d1b2;
 }
+
+.consultation-columns {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 100px;
+}
+
+@media screen and (min-width: 768px) {
+    .consultation-columns {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.consultation-block {
+    width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+    .consultation-block {
+        width: 48%;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f5f5f5;
+}
+
+.form-modif, .form-ajout {
+    margin-top: 1rem;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border: 1px solid #ddd;
+}
+
+.form-modif textarea, .form-ajout textarea, .form-ajout input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-modif button, .form-ajout button {
+    background-color: #3273dc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.form-modif button:hover, .form-ajout button:hover {
+    background-color: #2753a5;
+}
+
+.btn-modif {
+    background-color: #3273dc;
+    color: white;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.btn-modif:hover {
+    background-color: #2753a5;
+}
+
+.form-modif {
+    max-width: 600px;
+    margin: 100px auto;
+    background-color: #f5f5f5;
+    padding: 2rem;
+    border: 1px solid #ddd;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+button {
+    background-color: #3273dc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2753a5;
+}
+
+.success-message {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+    padding: 10px 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    border-radius: 4px;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group select:focus {
+    border-color: #3273dc;  /* Couleur primaire */
+    outline: none;
+}
