@@ -105,6 +105,7 @@ try {
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="../src/css/styles.css">
+    <link rel="stylesheet" href="../src/css/msg-styles.css">
     <link rel="stylesheet" href="../src/css/form.css">
     <link rel="icon" type="image/x-icon" href="../src/img/logo_medical.png">
 </head>

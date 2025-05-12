@@ -1,0 +1,68 @@
+/* Sidebar fixée à gauche */
+.sidebar {
+    position: fixed;
+    top: 60px;
+    /* Décale la sidebar sous le header */
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 60px);
+    /* Ajuste la hauteur pour ne pas dépasser */
+    background-color: #ffffff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Liste des conversations */
+.conversation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Chaque item */
+.conversation-item {
+    margin-bottom: 15px;
+}
+
+/* Carte de la conversation */
+.conversation-card {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.conversation-card:hover {
+    background-color: #f0f0f0;
+}
+
+/* Image de profil */
+.profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+}
+
+/* Infos de l’interlocuteur */
+.conversation-info {
+    flex: 1;
+}
+
+.username {
+    margin: 0;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.job-title {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #777;
+}
