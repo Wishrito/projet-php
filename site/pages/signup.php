@@ -114,7 +114,7 @@ $current_date = date('Y-m-d'); // Format YYYY-MM-DD
 
                 <div class="field">
                     <div class="control">
-                        <button type="submit" class="button is-primary">S'inscrire</button>
+                        <button type="submit" class="button is-primary">Inscrire</button>
                     </div>
                 </div>
 
