@@ -123,6 +123,7 @@ try {
                 if (!isset($_SESSION['ID'])) { ?>
                         <a href="<?php echo $base_url . 'login.php'; ?>" class="button is-link is-light">Connexion</a>
 
+
                 <?php } else { ?>
                     <?php if (isset($_SESSION['job']) && $_SESSION['job'] == "75") { ?>
                         <a href="<?php echo $base_url . 'signup.php'; ?>" class="button is-success is-light">Inscription</a>
@@ -130,6 +131,7 @@ try {
                             <a href="<?php echo $base_url . 'account.php'; ?>" class="button is-primary is-light">Mon compte</a>
                             <a href="<?php echo $base_url . 'inbox.php'; ?>" class="button is-primary is-light">Messagerie</a>
                             <a href="<?php echo $base_url . 'consultation.php'; ?>" class="button is-primary is-light">Consultations</a>
+                            <a href="<?php echo $base_url . 'medical_record.php'; ?>" class="button is-primary is-light">Dossier Médical</a>
                             <a href="<?php echo $base_url . 'logout.php'; ?>" class="button is-danger is-light">Se déconnecter</a>
                     <?php } ?>
             </nav>

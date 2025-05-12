@@ -118,7 +118,7 @@ $services = $services_stmt->fetchAll();
                             <?php if ($user_type === 'medical_staff'): ?>
                                 <tr>
                                     <td colspan="4" style="text-align:right;">
-                                        <a href="modifier_consultation.php?id=<?= $c['ID'] ?>" class="btn-modif">Modifier le débrief</a>
+                                        <a href="modify_consultation.php?id=<?= $c['ID'] ?>" class="btn-modif">Modifier le débrief</a>
                                     </td>
                                 </tr>
 
@@ -164,7 +164,7 @@ $services = $services_stmt->fetchAll();
                 <div class="container">
         <h1>Ajouter une Consultation</h1>
 
-        <form action="ajouter_consultation.php" method="POST">
+        <form action="add_consultation.php" method="POST">
             <div class="form-group">
                 <label for="patient_id">Sélectionner un Patient :</label>
                 <select name="patient_id" id="patient_id" required>
@@ -239,4 +239,11 @@ $services = $services_stmt->fetchAll();
 </div>
 
 </body>
+
+<footer class="footer">
+     <div>
+        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+     </div>
+</footer>
+
 </html>
