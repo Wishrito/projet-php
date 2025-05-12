@@ -16,7 +16,7 @@ require_once "./config.php";
 
 <?php
 // Récupère tous les messages où l'utilisateur est impliqué
-$request = "SELECT sender_id, sender_type, receiver_id, receiver_type 
+$request = "SELECT *
             FROM message
             WHERE (sender_id = :user_id AND sender_type = :user_type)
                OR (receiver_id = :user_id AND receiver_type = :user_type)";
@@ -32,15 +32,16 @@ $seen_ids = [];
 
 foreach ($convs as $conv) {
     // Détermine si l'utilisateur est l'expéditeur ou le destinataire
-    $is_sender = ($_SESSION['ID'] == $conv['sender_id'] && $_SESSION['user_type'] == $conv['sender_type']);
+    $is_sender = $_SESSION['ID'] == $conv['sender_id'] && $_SESSION['user_type'] == $conv['sender_type'];
 
     $interlocutor_id = $is_sender ? $conv['receiver_id'] : $conv['sender_id'];
     $interlocutor_type = $is_sender ? $conv['receiver_type'] : $conv['sender_type'];
 
     // Empêche de traiter deux fois la même personne
     $unique_key = $interlocutor_type . '_' . $interlocutor_id;
-    if (isset($seen_ids[$unique_key]))
+    if (isset($seen_ids[$unique_key])) {
         continue;
+    }
     $seen_ids[$unique_key] = true;
 
     // Requête pour obtenir les infos de l'interlocuteur
@@ -79,27 +80,84 @@ foreach ($convs as $conv) {
         <ul class="conversation-list">
             <?php foreach ($interlocutors as $i): ?>
                 <li class="conversation-item">
-                    <div class="conversation-card">
+                    <a href="?id=<?= htmlspecialchars($i['id']) ?>&type=<?= htmlspecialchars($i['type']) ?>">
+                        <div class="conversation-card">
                         <img class="profile-picture" src="<?= htmlspecialchars($i['profile_pic']) ?>"
                             alt="Photo de <?= htmlspecialchars($i['username']) ?>">
                         <div class="conversation-info">
-                            <p class="username">Conversation avec <strong><?= htmlspecialchars($i['username']) ?></strong>
+                            <p class="username">Conversation
+                                avec <strong><?= htmlspecialchars($i['username']) ?></strong>
                             </p>
                             <p class="job-title"><?= htmlspecialchars($i['job']) ?></p>
                     </div>
-                </div>
+                </div></a>
             </li>
-    <?php endforeach; ?>
-    </ul>
+        <?php endforeach; ?>
+        </ul>
+    </nav>
+    <?php if (isset($_GET['id']) && isset($_GET['type'])) {
+        // Si une conversation est sélectionnée
+        $id = $_GET['id'];
+        $type = $_GET['type'];
 
-        </nav>
+        // Vérifie si l'utilisateur a accès à cette conversation
+        if (!in_array($type, ['patient', 'medical_staff'])) {
+            echo "<p>Type d'utilisateur invalide.</p>";
+            exit;
+        }
 
+        $stmt = $pdo->prepare("SELECT * FROM $type WHERE id = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            $request = "SELECT * FROM message WHERE (sender_id = :user_id AND sender_type = :user_type) AND (receiver_id = :receiver_id AND receiver_type = :receiver_type) OR (sender_id = :receiver_id AND sender_type = :receiver_type) AND (receiver_id = :user_id AND receiver_type = :user_type) ORDER BY date";
+            $stmt = $pdo->prepare($request);
+            $stmt->bindValue(':user_id', $_SESSION['ID'], PDO::PARAM_INT);
+            $stmt->bindValue(':user_type', $_SESSION['user_type'], PDO::PARAM_STR);
+            $stmt->bindValue(':receiver_id', $id, PDO::PARAM_INT);
+            $stmt->bindValue(':receiver_type', $type, PDO::PARAM_STR);
+            $stmt->execute();
+            $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($messages as $message): ?>
+                                            <div class="chat-container">
+                                            <div class="message <?= ($_SESSION['ID'] == $message['sender_id']) ? 'sent' : 'received' ?>">
+                                            <p class="message-date"><?= htmlspecialchars($message['date']) ?></p>
+                                                                                <p class="message-text"><?= htmlspecialchars($message['content']) ?></p>
+                                                                            </div>
+                                                    <?php endforeach; ?>
+                        </div>
+
+<?php
+        } else {
+            echo "<p>Utilisateur introuvable.</p>";
+        }
+    } else { ?>
+<div class="main-content">
+    <p>Bienvenue dans votre messagerie !</p>
+    <p>Vous pouvez consulter vos conversations en cliquant sur les utilisateurs à gauche.</p>
+    <?php switch ($_SESSION['user_type']):
+        case 'patient': ?>
+            <p>Vous pouvez également consulter vos messages avec votre médecin.</p>
+            <?php break; ?>
+        <?php case 'medical_staff': ?>
+            <p>Vous pouvez également consulter vos messages avec vos patients.</p>
+            <a href="new_message.php" class="button">Nouvelle conversation</a>
+            <?php break; ?>
+    <?php endswitch;
+    } ?>
 </body>
 
 <footer class="footer">
      <div>
         <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
      </div>
+     <script>
+    const chatContainer = document.querySelector('.chat-container');
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+</script>
+
 </footer>
 
 </html>

@@ -66,3 +66,80 @@
     font-size: 13px;
     color: #777;
 }
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 500px;
+    /* ou 100% si intégré dans une mise en page avec hauteur définie */
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #f7f9fc;
+
+    /* Scrollbar esthétique (Chrome, Edge) */
+    scrollbar-width: thin;
+    /* Firefox */
+    scrollbar-color: #bbb transparent;
+}
+
+.chat-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 4px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Conteneur global des messages */
+.message {
+    max-width: 60%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    position: relative;
+
+    /* Empêche les mots d'être coupés */
+    word-break: normal;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    /* Permet les retours à la ligne naturels ET manuels */
+}
+
+/* Messages envoyés par l'utilisateur */
+.message.sent {
+    background-color: #cce4ff;
+    /* Bleu clair */
+    align-self: flex-end;
+    margin-left: auto;
+    border-bottom-right-radius: 4px;
+}
+
+/* Messages reçus */
+.message.received {
+    background-color: #e0f0ff;
+    /* Bleu plus pâle */
+    align-self: flex-start;
+    margin-right: auto;
+    border-bottom-left-radius: 4px;
+}
+
+/* Texte du message */
+.message-text {
+    margin: 0;
+    color: #222;
+}
+
+/* Date du message */
+.message-date {
+    margin-top: 5px;
+    font-size: 11px;
+    color: #666;
+    text-align: right;
+}
