@@ -51,7 +51,7 @@ if (!$consultation) {
 </head>
 <body>
 
-    <form class="form-modif" method="POST" action="modifier_consultation.php">
+    <form class="form-modif" method="POST" action="modify_consultation.php">
         <h2>Modifier le débrief de la consultation</h2>
         <input type="hidden" name="consultation_id" value="<?= htmlspecialchars($consultation['ID']) ?>">
         <label for="debrief">Débrief :</label>

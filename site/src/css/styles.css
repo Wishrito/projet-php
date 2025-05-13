@@ -244,3 +244,13 @@ button:hover {
     border-color: #3273dc;  /* Couleur primaire */
     outline: none;
 }
+.delete-button {
+    background-color: #ff4d4f;
+    border: none;
+    color: white;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}

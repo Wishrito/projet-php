@@ -105,6 +105,9 @@ $services = $services_stmt->fetchAll();
                             <th>Service</th>
                             <th><?php echo $user_type === 'patient' ? 'Médecin' : 'Patient'; ?></th>
                             <th>Débrief</th>
+                            <?php if ($user_type === 'medical_staff'): ?>
+                                <th>Action</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,16 +117,15 @@ $services = $services_stmt->fetchAll();
                                 <td><?= htmlspecialchars($c['service']) ?></td>
                                 <td><?= htmlspecialchars($c['first_name'] . ' ' . $c['last_name']) ?></td>
                                 <td><?= nl2br(htmlspecialchars($c['debrief'])) ?></td>
-                            </tr>
+                            
                             <?php if ($user_type === 'medical_staff'): ?>
-                                <tr>
                                     <td colspan="4" style="text-align:right;">
                                         <a href="modify_consultation.php?id=<?= $c['ID'] ?>" class="btn-modif">Modifier le débrief</a>
                                     </td>
-                                </tr>
 
 
                             <?php endif; ?>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -142,6 +144,7 @@ $services = $services_stmt->fetchAll();
                             <th>Service</th>
                             <th><?php echo $user_type === 'patient' ? 'Médecin' : 'Patient'; ?></th>
                             <th>Débrief</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -151,6 +154,18 @@ $services = $services_stmt->fetchAll();
                                 <td><?= htmlspecialchars($c['service']) ?></td>
                                 <td><?= htmlspecialchars($c['first_name'] . ' ' . $c['last_name']) ?></td>
                                 <td><?= nl2br(htmlspecialchars($c['debrief'])) ?></td>
+                                <td>
+                                    <?php if ($user_type === 'patient'): ?>
+                                        <form method="POST" action="send_message.php">
+                                            <input type="hidden" name="receiver_id" value="<?= $c['ID'] ?>">
+                                            <input type="hidden" name="receiver_type" value="medical_staff">
+                                            <textarea name="message" placeholder="Envoyer un message au médecin"></textarea>
+                                            <button type="submit">Envoyer</button>
+                                        </form>
+                                    <?php else: ?>
+                                        <a class="delete-button" href="delete_consultation.php?consultation_id=<?= $c['ID'] ?>">&times;</a>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -188,34 +203,13 @@ $services = $services_stmt->fetchAll();
             </div>
 
             <div class="form-group">
-                <label for="date">Date de la Consultation :</label>
+                <label for="date">Date et heure de la Consultation :</label>
                 <input type="date" name="date" id="date" required>
+                <input type="time" name="time" id="" min="8:00" max="18h00" required>
             </div>
 
             <div class="form-group">
-                <label for="hour">Heure :</label>
-                <select name="hour" id="hour" required>
-                    <?php for ($i = 0; $i < 24; $i++): ?>
-                        <option value="<?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>">
-                            <?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>
-                        </option>
-                    <?php endfor; ?>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="minute">Minute :</label>
-                <select name="minute" id="minute" required>
-                    <?php for ($i = 0; $i < 60; $i++): ?>
-                        <option value="<?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>">
-                            <?= str_pad($i, 2, '0', STR_PAD_LEFT) ?>
-                        </option>
-                    <?php endfor; ?>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="debrief">Débrief :</label>
+                <label for="debrief">Détails :</label>
                 <textarea name="debrief" id="debrief" rows="4" required></textarea>
             </div>
 

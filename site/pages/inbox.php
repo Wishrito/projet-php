@@ -153,6 +153,7 @@ foreach ($convs as $conv) {
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Vérifie si l'utilisateur existe et récupère les messages de la conversation
         if ($user) {
             $request = "SELECT * FROM message WHERE (sender_id = :user_id AND sender_type = :user_type) AND (receiver_id = :receiver_id AND receiver_type = :receiver_type) OR (sender_id = :receiver_id AND sender_type = :receiver_type) AND (receiver_id = :user_id AND receiver_type = :user_type) ORDER BY date";
             $stmt = $pdo->prepare($request);
@@ -191,7 +192,7 @@ foreach ($convs as $conv) {
     <p>Bienvenue dans votre messagerie !</p>
     <p>Vous pouvez consulter vos conversations en cliquant sur les utilisateurs à gauche.</p>
             <?php }
-    if (isset($_GET['id']) && isset($_GET['type'])) { ?>
+    if (isset($_GET['id'], $_GET['type']) && $_GET['id'] != 0) { ?>
                 <div class="message-form">
                     <form method="POST" action="send_message.php">
                         <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
