@@ -44,11 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <title><?php echo $site->siteName() ?> - Connexion</title>
+    <title><?= $site->siteName() ?> - Connexion</title>
 </head>
 
 <body>
-    <?php if (!isset($_SESSION['username'])) { ?>
+    <?php if (!isset($_GET['is_suspended'])) {
+        if (!isset($_SESSION['username'])) { ?>
         <div class="block">
             <form action="" method="post" class="box">
                 <h1 class="title is-4 has-text-centered">Connexion</h1>
@@ -91,17 +92,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <?php } else { ?>
         <div class="container">
-            <h1 class="title is-4">Bienvenue, <?php echo $_SESSION['email']; ?></h1>
+            <h1 class="title is-4">Bienvenue, <?= $_SESSION['email']; ?></h1>
             <form action="logout.php" method="post">
                 <button type="submit" class="button is-danger">Se déconnecter</button>
             </form>
         </div>
-    <?php } ?>
+    <?php }
+    } else { ?>
+    <div class="notification is-danger">
+        Votre compte a été suspendu. Veuillez contacter l'administrateur.
+    </div><?php }
+    ?>
 </body>
 
 <footer class="footer">
      <div>
-        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+        <p>© 2025 <?= $site->siteName() ?>. Tous droits réservés.</p>
      </div>
 </footer>
 

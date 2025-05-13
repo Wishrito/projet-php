@@ -6,10 +6,21 @@ require_once "./config.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+    .chat-container {
+        max-height: calc(100vh - 10rem); /* Ajuste selon ton layout réel */
+        overflow-y: auto;
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+    }
+    .sidebar {
+        margin-top: 4rem; /* Ajuste selon la hauteur de ta navbar */
+    }
+
+    </style>
     <?php if (isset($_GET['id']) && isset($_GET['type'])) {
         // Si une conversation est sélectionnée
         $id = $_GET['id'];
@@ -33,14 +44,14 @@ require_once "./config.php";
                 $full_name = "$last_name $first_name";
             }
             ?>
-            <title><?php echo $site->siteName() ?> - Conversation avec <?php echo $full_name ?></title> <?php
+                                    <title><?= $site->siteName() ?> - Conversation avec <?= $full_name ?></title> <?php
         } else { ?>
-                    <title><?php echo $site->siteName() ?> - Messagerie</title>
+                                    <title><?= $site->siteName() ?> - Messagerie</title>
     <?php }
     } else {
         // Si aucune conversation n'est sélectionnée
         ?>
-    <title><?php echo $site->siteName() ?> - Messagerie</title>
+                <title><?= $site->siteName() ?> - Messagerie</title>
     <?php }
     ?>
 </head>
@@ -69,7 +80,7 @@ foreach ($convs as $conv) {
     $interlocutor_type = $is_sender ? $conv['receiver_type'] : $conv['sender_type'];
 
     // Empêche de traiter deux fois la même personne
-    $unique_key = $interlocutor_type . '_' . $interlocutor_id;
+    $unique_key = "{$interlocutor_type}_$interlocutor_id";
     if (isset($seen_ids[$unique_key])) {
         continue;
     }
@@ -107,36 +118,40 @@ foreach ($convs as $conv) {
 }
 ?>
 <body>
-    <nav class="sidebar">
-        <ul class="conversation-list">
-            <?php foreach ($interlocutors as $i): ?>
-                <li class="conversation-item">
-                    <a href="?id=<?= htmlspecialchars($i['id']) ?>&type=<?= htmlspecialchars($i['type']) ?>">
-                        <div class="conversation-card">
-                        <img class="profile-picture" src="<?= htmlspecialchars($i['profile_pic']) ?>"
-                            alt="Photo de <?= htmlspecialchars($i['username']) ?>">
+<nav class="sidebar menu has-background-light p-3 is-one-quarter" style="width: 300px; height: 100vh; overflow-y: auto;">
+    <ul class="menu-list conversation-list">
+        <?php foreach ($interlocutors as $i): ?>
+                            <li class="conversation-item mb-3">
+                                <a href="?id=<?= htmlspecialchars($i['id']) ?>&type=<?= htmlspecialchars($i['type']) ?>"
+                                class="is-flex is-align-items-center p-2 has-background-white box shadow-sm" style="border-radius: 8px;">
+                                <div class="conversation-card is-flex is-align-items-center">
+                                    <img class="profile-picture mr-3" src="<?= htmlspecialchars($i['profile_pic']) ?>"
+                                        alt="Photo de <?= htmlspecialchars($i['username']) ?>"
+                                        style="width: 50px; height: 50px; border-radius: 50%;">
                         <div class="conversation-info">
-                            <p class="username">Conversation
-                                avec <strong><?= htmlspecialchars($i['username']) ?></strong>
+                            <p class="username mb-1">
+                                Conversation avec <strong><?= htmlspecialchars($i['username']) ?></strong>
                             </p>
-                            <p class="job-title"><?= htmlspecialchars($i['job']) ?></p>
+                            <p class="job-title has-text-grey"><?= htmlspecialchars($i['job']) ?></p>
+                            </div>
                     </div>
-                </div></a>
+                </a>
             </li>
         <?php endforeach; ?>
-        </ul>
-        <div class="sidebar-footer">
-            
-            <?php switch ($_SESSION['user_type']):
-                case 'patient': ?>
-                    <p>Vous pouvez également consulter vos messages avec votre médecin.</p>
-                    <?php break;
-                case 'medical_staff': ?>
-                    <a href="new_conv.php" class="button">Nouvelle conversation</a>
-                    <?php break;
-            endswitch;
-            ?>
-    </nav>
+    </ul>
+
+    <div class="sidebar-footer mt-4 px-2">
+        <?php switch ($_SESSION['user_type']):
+            case 'patient': ?>
+                                                <p class="has-text-grey-dark">Vous pouvez également consulter vos messages avec votre médecin.</p>
+                                        <?php break;
+            case 'medical_staff': ?>
+                                                <a href="new_conv.php" class="button is-link is-fullwidth">Nouvelle conversation</a>
+                                        <?php break;
+        endswitch; ?>
+    </div>
+</nav>
+
     <?php if (isset($_GET['id']) && isset($_GET['type'])) {
         // Si une conversation est sélectionnée
         $id = $_GET['id'];
@@ -162,57 +177,56 @@ foreach ($convs as $conv) {
             $stmt->bindValue(':receiver_id', $id, PDO::PARAM_INT);
             $stmt->bindValue(':receiver_type', $type, PDO::PARAM_STR);
             $stmt->execute();
-            $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo "<div class='chat-container'>";
-
-            foreach ($messages as $message): ?>
-                    <div class="message <?= ($_SESSION['ID'] == $message['sender_id']) ? 'sent' : 'received' ?>">
-                    <p class="message-date"><?= htmlspecialchars($message['date']) ?></p>
-    <p class="message-text"><?= htmlspecialchars($message['content']) ?></p>
-
-    <?php if ($_SESSION['ID'] == $message['sender_id']): ?>
-        <form method="POST" action="delete_message.php" class="delete-form">
-            <input type="hidden" name="message_id" value="<?= $message['ID'] ?>">
-            <input type="hidden" name="receiver_id" value="<?= $id ?>">
-            <input type="hidden" name="receiver_type" value="<?= $type ?>">
-            <button type="submit" class="delete-button" title="Supprimer ce message">&times;</button>
-        </form>
-    <?php endif; ?>
-</div>
-
-<?php endforeach; ?>
-</div>
-
-<?php
-        } else {
-            echo "<p>Utilisateur introuvable.</p>";
+            $messages = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
+            <div class="chat-container p-4" style="max-height: 75vh; overflow-y: auto;">
+            <?php foreach ($messages as $message): ?>
+                            <div class="message-box mb-3 <?= ($_SESSION['ID'] == $message['sender_id']) ? 'sent has-background-primary-light' : 'received has-background-light' ?> box p-3" style="border-radius: 8px; max-width: 70%; <?= ($_SESSION['ID'] == $message['sender_id']) ? 'margin-left:auto;' : 'margin-right:auto;' ?>">
+                                <p class="message-date has-text-grey is-size-7 mb-1"><?= htmlspecialchars($message['date']) ?></p>
+                                <p class="message-text"><?= htmlspecialchars($message['content']) ?></p>
+        
+                                <?php if ($_SESSION['ID'] == $message['sender_id']): ?>
+                                                                <form method="POST" action="delete_message.php" class="delete-form mt-2 is-flex is-justify-content-end">
+                                                                    <input type="hidden" name="message_id" value="<?= $message['ID'] ?>">
+                                                    <input type="hidden" name="receiver_id" value="<?= $id ?>">
+                                                    <input type="hidden" name="receiver_type" value="<?= $type ?>">
+                    <button type="submit" class="delete-button button is-small is-danger is-light" title="Supprimer ce message">
+                    &times;
+                    </button>
+                </form>
+                <?php endif; ?>
+                    </div>
+            <?php endforeach; ?>
+            </div>
+        <?php if (!isset($_GET['id'], $_GET['type']) || $_GET['id'] == 0): ?>
+            <div class="main-content p-4">
+                <p class="is-size-5 has-text-grey">Bienvenue dans votre messagerie !</p>
+                <p class="is-size-6">Vous pouvez consulter vos conversations en cliquant sur les utilisateurs à gauche.</p>
+            </div>
+        <?php endif; ?>
+        
+        <?php if (isset($_GET['id'], $_GET['type']) && $_GET['id'] != 0): ?>
+            <div class="message-form mt-4 p-4 has-background-light is-three-quarters">
+                <form method="POST" action="send_message.php" class="is-flex is-flex-direction-column">
+                    <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
+                    <input type="hidden" name="receiver_type" value="<?= htmlspecialchars($type) ?>">
+                    <textarea name="message" class="textarea mb-3" placeholder="Écrire un message..." required></textarea>
+                    <button type="submit" class="button is-link is-fullwidth">Envoyer</button>
+                </form>
+            </div>
+        <?php endif; ?>
+            <?php
         }
-    } else { ?>
-<div class="main-content">
-    <p>Bienvenue dans votre messagerie !</p>
-    <p>Vous pouvez consulter vos conversations en cliquant sur les utilisateurs à gauche.</p>
-            <?php }
-    if (isset($_GET['id'], $_GET['type']) && $_GET['id'] != 0) { ?>
-                <div class="message-form">
-                    <form method="POST" action="send_message.php">
-                        <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
-                        <input type="hidden" name="receiver_type" value="<?= htmlspecialchars($type) ?>">
-                        <textarea name="message" placeholder="Écrire un message..." required></textarea>
-                        <button type="submit">Envoyer</button>
-                    </form>
-                </div><?php
     } ?>
     </body>
 
-<footer class="footer">
-     <div>
-        <p>© 2025 <?= $site->siteName() ?>. Tous droits réservés.</p>
-     </div>
-     <script>
-    const chatContainer = document.querySelector('.chat-container');
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+<?php include_once './modules/footer.php'; ?>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chatContainer = document.querySelector('.chat-container');
+        if (chatContainer) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    });
 </script>
-
-</footer>
 
 </html>

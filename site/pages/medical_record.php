@@ -56,7 +56,7 @@ $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $site->siteName() ?> - Dossiers Médicaux</title>
+    <title><?= $site->siteName() ?> - Dossiers Médicaux</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="../src/css/styles.css">
 </head>
@@ -74,8 +74,8 @@ $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="select">
                             <select name="patient_id" required>
                                 <?php foreach ($patients as $patient): ?>
-                                    <option value="<?php echo $patient['ID']; ?>">
-                                        <?php echo htmlspecialchars($patient['first_name'] . " " . $patient['last_name']); ?>
+                                            <option value="<?= $patient['ID']; ?>">
+                                        <?= htmlspecialchars($patient['first_name'] . " " . $patient['last_name']); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -126,22 +126,22 @@ $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php if ($user_type === 'medical_staff') {
                         echo '<td>' . htmlspecialchars($record['first_name'] . ' ' . $record['last_name']) . '</td>';
                     } ?>
-                    <td><?php echo htmlspecialchars($record['record_date']); ?></td>
-                    <td><?php echo nl2br(htmlspecialchars($record['diagnosis'])); ?></td>
-                    <td><?php echo nl2br(htmlspecialchars($record['notes'])); ?></td>
+                        <td><?= htmlspecialchars($record['record_date']); ?></td>
+                    <td><?= nl2br(htmlspecialchars($record['diagnosis'])); ?></td>
+                    <td><?= nl2br(htmlspecialchars($record['notes'])); ?></td>
                     <?php if ($user_type === 'medical_staff' && $record['doctor_id'] == $user_id): ?>
                         <td>
                             <details>
                                 <summary class="button is-small is-info is-light">Modifier</summary>
                                 <form method="post" class="mt-2">
-                                    <input type="hidden" name="record_id" value="<?php echo $record['id']; ?>">
-                                    <input type="hidden" name="patient_id" value="<?php echo $record['patient_id']; ?>">
+                                    <input type="hidden" name="record_id" value="<?= $record['id']; ?>">
+                                    <input type="hidden" name="patient_id" value="<?= $record['patient_id']; ?>">
 
                                     <div class="field">
-                                        <textarea name="diagnosis" class="textarea is-small" required><?php echo htmlspecialchars($record['diagnosis']); ?></textarea>
+                                        <textarea name="diagnosis" class="textarea is-small" required><?= htmlspecialchars($record['diagnosis']); ?></textarea>
                                     </div>
                                     <div class="field">
-                                        <textarea name="notes" class="textarea is-small"><?php echo htmlspecialchars($record['notes']); ?></textarea>
+                                        <textarea name="notes" class="textarea is-small"><?= htmlspecialchars($record['notes']); ?></textarea>
                                     </div>
                                     <div class="control">
                                         <button type="submit" class="button is-success is-light is-small">Enregistrer</button>
@@ -162,7 +162,7 @@ $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <footer class="footer">
      <div>
-        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+        <p>© 2025 <?= $site->siteName() ?>. Tous droits réservés.</p>
      </div>
 </footer>
 

@@ -8,7 +8,7 @@ require "./config.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $site->siteName() ?> - Accueil</title>
+    <title><?= $site->siteName() ?> - Accueil</title>
 </head>
 
 <body>
@@ -20,7 +20,7 @@ require "./config.php";
 
     <footer class="footer">
         <div>
-            <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+            <p>© 2025 <?= $site->siteName() ?>. Tous droits réservés.</p>
         </div>
     </footer>
 

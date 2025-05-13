@@ -63,7 +63,7 @@ if (!$consultation) {
 
 <footer class="footer">
      <div>
-        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+        <p>© 2025 <?= $site->siteName() ?>. Tous droits réservés.</p>
      </div>
 </footer>
 

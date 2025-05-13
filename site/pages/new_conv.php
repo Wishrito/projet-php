@@ -62,35 +62,55 @@ $stmt->execute();
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <title><?php echo $site->siteName() ?> - Nouvelle conversation</title>
+    <title><?= $site->siteName() ?> - Nouvelle conversation</title>
     <body>
 
-    <form id="user-form" method="GET" action="">
-        <label for="group" selected value="">Choisissez une option :</label>
-        <select name="group" id="group" onchange="submitForm()">
-            <?php if (!isset($id) || !isset($group)) {?>
-            <option value="" selected disabled>Choisissez un utilisateur</option>
-            <?php } ?>
-            <option value="medical_staff" <?= $group === 'medical_staff' ? 'selected' : '' ?>>Personnel médical</option>
+    <form id="user-form" method="GET" action="" class="box">
+    <div class="field">
+        <label for="group" class="label">Choisissez une option :</label>
+        <div class="control">
+            <select name="group" id="group" onchange="submitForm()" class="select is-fullwidth">
+                <?php if (!isset($id) || !isset($group)) { ?>
+                        <option value="" selected disabled>Choisissez un utilisateur</option>
+                    <?php } ?>
+                    <option value="medical_staff" <?= $group === 'medical_staff' ? 'selected' : '' ?>>Personnel médical
+                    </option>
                 <option value="patient" <?= $group === 'patient' ? 'selected' : '' ?>>Patient</option>
             </select>
-            <label for="user">Choisissez un utilisateur :</label>
-            <select name="user" id="" onchange="submitForm()">
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="user" class="label">Choisissez un utilisateur :</label>
+        <div class="control">
+            <select name="user" id="user" onchange="submitForm()" class="select is-fullwidth">
                 <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<option value='{$row['id']}'>{$row['last_name']} {$row['first_name']}</option>";
                 } ?>
             </select>
-        </form>
-        <form id="msg-form" method="POST" action="send_message.php">
+        </div>
+    </div>
+</form>
 
-        <?php if (isset($id) && isset($group)) { ?>
-            <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
-            <input type="hidden" name="receiver_type" value="<?= htmlspecialchars($group) ?>">
-            <?php } ?>
-            <label for="message">Message :</label>
-            <textarea name="message" id="message" rows="4" required></textarea>
-            <button type="submit">Contacter</button>
-        </form>
+<form id="msg-form" method="POST" action="send_message.php" class="box">
+    <?php if (isset($id) && isset($group)) { ?>
+        <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
+        <input type="hidden" name="receiver_type" value="<?= htmlspecialchars($group) ?>">
+    <?php } ?>
+<div class="field">
+    <label for="message" class="label">Message :</label>
+    <div class="control">
+        <textarea name="message" id="message" rows="4" class="textarea is-medium" required></textarea>
+    </div>
+</div>
+
+<div class="field">
+    <div class="control">
+        <button type="submit" class="button is-link is-medium">Contacter</button>
+    </div>
+</div>
+</form>
+
 
 <footer class="footer">
 <script>

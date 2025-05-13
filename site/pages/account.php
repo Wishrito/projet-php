@@ -32,7 +32,7 @@ $user = $requete->fetch(PDO::FETCH_ASSOC);
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $site->siteName(); ?> - Mon compte</title>
+    <title><?= $site->siteName(); ?> - Mon compte</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -40,21 +40,22 @@ $user = $requete->fetch(PDO::FETCH_ASSOC);
         <div class="container">
             <div class="box has-text-centered">
                 <figure class="image is-128x128 is-inline-block mb-4">
-                    <img class="is-rounded" src="<?php echo htmlspecialchars($user['profile_pic'] ?? 'img/profile_pics/default.png'); ?>" alt="Photo de profil">
+                    <img class="is-rounded" src="<?= htmlspecialchars($user['profile_pic'] ?? 'img/profile_pics/default.png'); ?>"
+                        alt="Photo de profil">
                 </figure>
-                <h1 class="title is-4"></strong> <?php echo $user['username'] ?? 'N/A'; ?></h1>
+                <h1 class="title is-4"></strong> <?= $user['username'] ?? 'N/A'; ?></h1>
                 <div class="content has-text-left is-size-5 mt-5">
-                    <p><strong>Email:</strong> <?php echo $user['email']; ?></p>
-                    <p><strong>Prénom:</strong> <?php echo $user['first_name']; ?></p>
-                    <p><strong>Nom:</strong> <?php echo $user['last_name']; ?></p>
-                    <p><strong>Date de naissance:</strong> <?php echo $user['birth_date']; ?></p>
+                    <p><strong>Email:</strong> <?= $user['email']; ?></p>
+                    <p><strong>Prénom:</strong> <?= $user['first_name']; ?></p>
+                    <p><strong>Nom:</strong> <?= $user['last_name']; ?></p>
+                    <p><strong>Date de naissance:</strong> <?= $user['birth_date']; ?></p>
 
                     <?php if ($user_type === 'patient'): ?>
-                        <p><strong>Date d'admission:</strong> <?php echo $user['admission_date']; ?></p>
+                                <p><strong>Date d'admission:</strong> <?= $user['admission_date']; ?></p>
                     <?php elseif ($user_type === 'medical_staff'): ?>
-                        <p><strong>Date d'embauche:</strong> <?php echo $user['hiring_date']; ?></p>
-                        <p><strong>Service:</strong> <?php echo $user['service_name']; ?></p>
-                        <p><strong>Poste:</strong> <?php echo $user['job_name']; ?></p>
+                                <p><strong>Date d'embauche:</strong> <?= $user['hiring_date']; ?></p>
+                            <p><strong>Service:</strong> <?= $user['service_name']; ?></p>
+                            <p><strong>Poste:</strong> <?= $user['job_name']; ?></p>
                     <?php endif; ?>
                 </div>
 
@@ -67,11 +68,6 @@ $user = $requete->fetch(PDO::FETCH_ASSOC);
     </section>
 </body>
 
-
-<footer class="footer">
-    <div>
-        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
-    </div>
-</footer>
+<?php include_once './modules/footer.php'; ?>
 
 </html>

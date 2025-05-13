@@ -56,91 +56,99 @@ $current_date = date('Y-m-d'); // Format YYYY-MM-DD
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $site->siteName() ?> - Inscription</title>
+    <title><?= $site->siteName() ?> - Inscription</title>
 </head>
 
 <body>
-    <section class="section">
-        <div class="block">
-            <form method="POST" action="">
-                <div>
-                    <h1 class="title is-4 has-text-centered">Inscription</h1>
-                    <div class="form-row">
-                        <div class="field">
-                            <label for="lastname"class="label">Nom</label>
-                            <div id="lastname" class="control">
-                                <input class="input" type="text" name="lastname" placeholder="Entrez votre nom"
-                                    required>
-                            </div>
+<section class="section has-background-light" style="margin-top: 4rem;">
+    <div class="container box p-5">
+        <form method="POST" action="">
+            <h1 class="title is-4 has-text-centered mb-5">Inscription</h1>
+
+            <div class="columns is-variable is-6">
+                <div class="column">
+                    <div class="field">
+                        <label for="lastname" class="label">Nom</label>
+                        <div class="control">
+                            <input class="input" type="text" name="lastname" placeholder="Entrez votre nom" required>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="field">
-                            <label for="name" class="label">Prénom</label>
-                            <div id="name" class="control">
-                                <input class="input" type="text" name="firstname" placeholder="Entrez votre prénom"
-                                    required>
-                            </div>
+                <div class="column">
+                    <div class="field">
+                        <label for="firstname" class="label">Prénom</label>
+                        <div class="control">
+                            <input class="input" type="text" name="firstname" placeholder="Entrez votre prénom" required>
                         </div>
-
                     </div>
                 </div>
+            </div>
 
-                <div class="field">
-                    <label for="mail" class="label">Email</label>
-                    <div id="mail" class="control">
-                        <input class="input" type="email" name="email" placeholder="Entrez votre email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Format d'email invalide.">
-                    </div>
+            <div class="field">
+                <label for="email" class="label">Email</label>
+                <div class="control">
+                    <input class="input" type="email" name="email" placeholder="Entrez votre email" required
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                        title="Format d'email invalide.">
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="birth_date" class="label">Date de naissance</label>
+                <div class="control">
+                    <input class="input" type="date" name="birth_date" max="<?= $current_date ?>" required>
+                </div>
                 </div>
 
-                <div class="field">
-                    <label for="birth_date" class="label">Date de Naissance</label>
-                    <div id="date" class="control">
-                        <input class="date" type="date" name="birth_date" max="<?= $current_date ?>" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
+            <div class="columns is-variable is-6">
+                <div class="column">
                     <div class="field">
                         <label for="password" class="label">Mot de passe</label>
-                        <div id="password" class="control">
-                            <input class="input" type="password" name="password" placeholder="Entrez votre mot de passe"
-                                required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
-                        </div>
-                    </div>
-    
-                    <div class="field">
-                        <label for="confirmpassword" class="label">Confirmer</label>
-                        <div id="confirmpassword" class="control">
-                            <input class="input" type="password" name="passwordConfirm"
-                                placeholder="Entrez votre mot de passe" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
+                        <div class="control">
+                            <input class="input" type="password" name="password"
+                                placeholder="Entrez votre mot de passe"
+                                required
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
                         </div>
                     </div>
                 </div>
-                <div class="field">
-                    <div class="control">
-                        <label for="user_type">Type d'utilisateur</label>
-                        <select name="user_type" id="">
+
+                <div class="column">
+                    <div class="field">
+                        <label for="passwordConfirm" class="label">Confirmer</label>
+                        <div class="control">
+                            <input class="input" type="password" name="passwordConfirm"
+                                placeholder="Confirmez votre mot de passe"
+                                required
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="user_type" class="label">Type d'utilisateur</label>
+                <div class="control">
+                    <div class="select is-fullwidth">
+                        <select name="user_type">
                             <option value="medical_staff">Corps Médical</option>
                             <option value="patient">Patient</option>
                         </select>
                     </div>
                 </div>
+            </div>
 
-                <div class="field">
-                    <div class="control">
-                        <button type="submit" class="button is-primary">Inscrire</button>
-                    </div>
+            <div class="field mt-5">
+                <div class="control has-text-centered">
+                    <button type="submit" class="button is-primary is-medium">Inscrire</button>
                 </div>
-
-            </form>
-        </div>
-    </section>
-</body>
-
-<footer class="footer">
-    <div>
-        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
+            </div>
+        </form>
     </div>
-</footer>
+</section>
+
+</body>
+<?php include_once './modules/footer.php'; ?>
 
 </html>

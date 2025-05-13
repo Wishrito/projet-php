@@ -36,15 +36,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Mise à jour des informations utilisateur
     if (empty($errors)) {
-        $update_sql = "UPDATE " . ($user_type === 'patient' ? 'patient' : 'medical_staff') . "
-                       SET first_name = ?, last_name = ?, email = ?, birth_date = ?, profile_pic = ?, service = ?," . ($user_type === 'medical_staff' ? " job = ?" : " ") .
-            "WHERE ID = ?";
+        if ($user_type !== 'patient') {
+            $query = " SET first_name = ?, last_name = ?, email = ?, birth_date = ?, profile_pic = ?, service = ?, job = ?
+                       WHERE ID = ?";
+        } else {
+            $query = " SET first_name = ?, last_name = ?, email = ?, birth_date = ?, profile_pic = ?
+                       WHERE ID = ?";
+        }
+
+
+        $update_sql = "UPDATE " . ($user_type === 'patient' ? 'patient' : 'medical_staff') . $query;
         $stmt = $pdo->prepare($update_sql);
         $params = [$first_name, $last_name, $email, $birth_date, $profile_pic_path, $service_id, $job_id, $user_id];
-        if ($user_type !== 'patient') {
-            $params[] = $job_id;
-
-        }
         $stmt->execute($params);
         $success = true;
     }

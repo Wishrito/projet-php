@@ -10,6 +10,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 
+
 class SiteConfig
 {
     private $attributes = [
@@ -62,7 +63,7 @@ class SiteConfig
     // Generic getter for any attribute
     public function getAttribute(string $key): string|null
     {
-        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
+        return $this->attributes[$key] ?? null;
     }
 
     // Getter for all attributes
@@ -98,46 +99,58 @@ try {
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }
+// Vérifier si l'utilisateur n'est pas suspendu
+if (isset($_SESSION['ID'])) {
+    $stmt = $pdo->prepare("SELECT is_suspended FROM patient WHERE ID = :id");
+    $stmt->bindParam(':id', $_SESSION['ID'], PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && $user['is_suspended'] == 1) {
+        session_destroy();
+        header('Location: login.php?error=account_suspended');
+        exit();
+    }
+}
+
+$base_url = $site->baseUrl()
 ?>
 <!DOCTYPE HTML>
 <html lang="fr">
 
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="../src/css/bulma.min.css">
     <link rel="stylesheet" href="../src/css/styles.css">
-    <link rel="stylesheet" href="../src/css/msg-styles.css">
-    <link rel="stylesheet" href="../src/css/form.css">
     <link rel="icon" type="image/x-icon" href="../src/img/logo_medical.png">
 </head>
-
 <body>
     <div class="block">
-        <header class="header">
-            <a href="<?php echo $site->baseUrl() . 'index.php'; ?>" class="header-logo">
-                <img class="img-logo" alt="logo de l'application" src="../src/img/logo_medical.png" width="50">
-            </a>
-            <a href="<?php echo $site->baseUrl() . 'index.php'; ?>" class="header-logo">Accueil</a>
-            <nav class="header-menu">
-                <?php
-                $base_url = $site->baseUrl();
-                if (!isset($_SESSION['ID'])) { ?>
-                        <a href="<?php echo $base_url . 'login.php'; ?>" class="button is-link is-light">Connexion</a>
+        <header class="header navbar is-light is-fixed-top px-4 py-2 is-align-items-center">
+            <div class="navbar-brand">
+                <a href="<?= $site->baseUrl() ?>index.php" class="navbar-item">
+                    <img class="img-logo" alt="logo de l'application" src="../src/img/logo_medical.png" width="50">
+                </a>
+                <a href="<?= $base_url ?>index.php" class="navbar-item has-text-weight-bold">Accueil</a>
+                </div>
 
-
+            <nav class="navbar-menu ml-auto is-flex is-align-items-center">
+                <?php if (!isset($_SESSION['ID'])) { ?>
+                    <a href="<?= $base_url ?>login.php" class="button is-link is-light mx-1">Connexion</a>
                 <?php } else { ?>
-                    <?php if (isset($_SESSION['job']) && $_SESSION['job'] == "75") { ?>
-                        <a href="<?php echo $base_url . 'signup.php'; ?>" class="button is-success is-light">Inscription</a>
+                    <?php if (isset($_SESSION['job']) && $_SESSION['job'] == 75) { ?>
+                        <a href="<?= $base_url ?>signup.php" class="button is-success is-light mx-1">Inscription</a>
+                        <a href="<?= $base_url ?>users.php" class="button is-success is-light mx-1">Utilisateurs</a>
                     <?php } ?>
-                            <a href="<?php echo $base_url . 'account.php'; ?>" class="button is-primary is-light">Mon compte</a>
-                            <a href="<?php echo $base_url . 'inbox.php'; ?>" class="button is-primary is-light">Messagerie</a>
-                            <a href="<?php echo $base_url . 'consultation.php'; ?>" class="button is-primary is-light">Consultations</a>
-                            <a href="<?php echo $base_url . 'medical_record.php'; ?>" class="button is-primary is-light">Dossier Médical</a>
-                            <a href="<?php echo $base_url . 'logout.php'; ?>" class="button is-danger is-light">Se déconnecter</a>
-                    <?php } ?>
+                                                            <a href="<?= $base_url ?>account.php" class="button is-primary is-light mx-1">Mon compte</a>
+                                                        <a href="<?= $base_url ?>inbox.php" class="button is-primary is-light mx-1">Messagerie</a>
+                                                        <?php if (!isset($_SESSION['job']) || !$_SESSION['job'] = 75) { ?>
+                                                            <a href="<?= $base_url ?>consultation.php" class="button is-primary is-light mx-1">Consultations</a>
+                                                            <a href="<?= $base_url ?>medical_record.php" class="button is-primary is-light mx-1">Dossier Médical</a>
+                                                        <?php } ?>
+                                                            <a href="<?= $base_url ?>logout.php" class="button is-danger is-light mx-1">Se déconnecter</a>
+                                                        <?php
+                } ?>
             </nav>
-            </header>
-        
+        </header>
     </div>
 </body>
-
-</html>

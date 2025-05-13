@@ -1,256 +1,65 @@
-.block {
-    background-color: #f5f5f5; /* Couleur de fond douce */
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+.card,
+.box,
+.conversation-card {
+    padding: 0.5rem 1rem;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed; /* Fixe la navbar */
-    top: 0; /* Place-la en haut de la fenêtre */
-    left: 0;
-    width: 100%; /* Prend toute la largeur de l'écran */
-    background-color: #fff; /* Assure une couleur de fond pour la navbar */
-    border-bottom: 1px solid #ddd;
-    z-index: 1000; /* Place la navbar au-dessus des autres éléments */
-    padding: 10px 20px; /* Ajoute des marges internes */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ajoute un léger effet d'ombre */
-}
-
-
-.header-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #3273dc; /* Couleur primaire de Bulma */
-    text-decoration: none;
-}
-
-.header-logo:hover {
-    color: #2753a5;
-}
-
-.header-menu .a {
-    margin-left: 10px;
-    color: #4a4a4a; /* Couleur de texte Bulma par défaut */
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.header-menu .a:hover {
-    color: #3273dc;
-}
-
-main {
-    padding-top: 80px; /* Pour éviter que le header ne cache le contenu */
-    text-align: center;
-}
-
-
-.footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1rem 0;
-    width: 100%; /* Assure que le footer prend toute la largeur */
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    justify-content: center; /* Centre le texte */
-    align-items: center;
-}
-
-.footer .p {
-    margin: 0;
-    margin-bottom:30px;
-    bottom: 0;
-}
-        
-.avatar-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(2, 1fr); /* mobile default */
-}
-
-@media screen and (min-width: 600px) {
-    .avatar-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media screen and (min-width: 800px) {
-    .avatar-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-@media screen and (min-width: 1024px) {
-    .avatar-grid {
-        grid-template-columns: repeat(5, 1fr);
-    }
-}
-
-.avatar-option {
-    text-align: center;
-}
-
-.avatar-option input[type="radio"] {
-    display: none;
-}
-
-.avatar-option img {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    border: 3px solid transparent;
+.profile-picture {
+    width: 40px;
+    height: 40px;
     object-fit: cover;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
+    border-radius: 50%;
+            margin-bottom: 0.5rem;
 }
-
-.avatar-option input[type="radio"]:checked + img {
-    border-color: #00d1b2;
-}
-
-.consultation-columns {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin-top: 100px;
-}
-
-@media screen and (min-width: 768px) {
-    .consultation-columns {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-}
-
-.consultation-block {
-    width: 100%;
-}
-
-@media screen and (min-width: 768px) {
-    .consultation-block {
-        width: 48%;
-    }
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #f5f5f5;
-}
-
-.form-modif, .form-ajout {
-    margin-top: 1rem;
-    background-color: #f5f5f5;
-    padding: 1rem;
-    border: 1px solid #ddd;
-}
-
-.form-modif textarea, .form-ajout textarea, .form-ajout input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.form-modif button, .form-ajout button {
-    background-color: #3273dc;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-}
-
-.form-modif button:hover, .form-ajout button:hover {
-    background-color: #2753a5;
-}
-
-.btn-modif {
-    background-color: #3273dc;
-    color: white;
-    padding: 6px 12px;
-    text-decoration: none;
-    border-radius: 4px;
-    display: inline-block;
-}
-
-.btn-modif:hover {
-    background-color: #2753a5;
-}
-
-.form-modif {
-    max-width: 600px;
-    margin: 100px auto;
-    background-color: #f5f5f5;
-    padding: 2rem;
-    border: 1px solid #ddd;
+/* Si vous avez besoin d'un peu plus d'espace pour les champs de formulaire */
+.field {
+    margin-bottom: 1.5rem;
+    /* Ajout d'un espacement entre les champs */
 }
 
 textarea {
-    width: 100%;
-    height: 150px;
-    padding: 10px;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    resize: vertical;
+    /* Permet de redimensionner uniquement verticalement */
+}
+
+select {
+    max-width: 100%;
+    /* S'assure que les select s'étendent sur toute la largeur du conteneur */
 }
 
 button {
-    background-color: #3273dc;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
+    margin-top: 1rem;
+    /* Ajout d'un petit espacement en haut du bouton */
 }
 
-button:hover {
-    background-color: #2753a5;
+/* Pour un joli espacement entre les deux formulaires */
+form.box+form.box {
+    margin-top: 1.5rem;
 }
 
-.success-message {
-    background-color: #dff0d8;
-    color: #3c763d;
-    border: 1px solid #d6e9c6;
-    padding: 10px 20px;
-    margin: 20px auto;
-    max-width: 600px;
-    border-radius: 4px;
+/* Pour un alignement cohérent des champs de formulaire */
+label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
 }
 
-.form-group select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+textarea {
+    min-height: 150px;
+        /* Une taille minimale de zone de texte */
+}
+/* Assurez-vous que le parent (navbar) utilise Flexbox */
+.navbar-brand {
+    display: flex;
+    justify-content: space-between;
+    /* Garde les éléments à chaque extrémité */
+    align-items: center;
+    /* Centrer verticalement le contenu */
 }
 
-.form-group select:focus {
-    border-color: #3273dc;  /* Couleur primaire */
-    outline: none;
-}
-.delete-button {
-    background-color: #ff4d4f;
-    border: none;
-    color: white;
-    font-size: 14px;
-    padding: 4px 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+/* Centrer le lien "Accueil" horizontalement dans la navbar */
+.navbar-brand .navbar-item.has-text-weight-bold {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    /* Centre l'élément horizontalement */
 }

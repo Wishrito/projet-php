@@ -68,160 +68,173 @@ $services = $services_stmt->fetchAll();
 
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $site->siteName() ?> - Consultations</title>
+    <title><?= $site->siteName() ?> - Consultations</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<div class="container">
-    <h1>Consultations</h1>
+<div class="container mt-5">
+    <h1 class="title is-3 has-text-centered">Consultations</h1>
 
     <?php if (isset($_GET['success'])): ?>
-    <div class="success-message">
-        <?= htmlspecialchars($_GET['success']) ?>
-    </div>
+                <div class="notification is-success is-light">
+                <?= htmlspecialchars($_GET['success']) ?>
+            </div>
     <?php endif; ?>
 
-
-    <div class="consultation-columns">
-        <div class="consultation-block">
-            <h2>Consultations passées</h2>
-            <?php if (count($past_consultations) > 0): ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Service</th>
-                            <th><?php echo $user_type === 'patient' ? 'Médecin' : 'Patient'; ?></th>
-                            <th>Débrief</th>
-                            <?php if ($user_type === 'medical_staff'): ?>
-                                <th>Action</th>
-                            <?php endif; ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($past_consultations as $c): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($c['date']) ?></td>
-                                <td><?= htmlspecialchars($c['service']) ?></td>
-                                <td><?= htmlspecialchars($c['first_name'] . ' ' . $c['last_name']) ?></td>
-                                <td><?= nl2br(htmlspecialchars($c['debrief'])) ?></td>
-                            
-                            <?php if ($user_type === 'medical_staff'): ?>
-                                    <td colspan="4" style="text-align:right;">
-                                        <a href="modify_consultation.php?id=<?= $c['ID'] ?>" class="btn-modif">Modifier le débrief</a>
-                                    </td>
-
-
-                            <?php endif; ?>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>Aucune consultation passée.</p>
-            <?php endif; ?>
+    <div class="columns is-multiline">
+        <!-- Consultations passées -->
+        <div class="column is-6">
+            <div class="box">
+                <h2 class="title is-5">Consultations passées</h2>
+                <?php if (count($past_consultations) > 0): ?>
+                    <div class="table-container">
+                        <table class="table is-striped is-hoverable is-fullwidth is-size-7">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Service</th>
+                                    <th><?= $user_type === 'patient' ? 'Médecin' : 'Patient'; ?></th>
+                                    <th>Débrief</th>
+                                    <?php if ($user_type === 'medical_staff'): ?>
+                                        <th>Action</th>
+                                    <?php endif; ?>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($past_consultations as $c): ?>
+                                            <tr>
+                                                <td><?= htmlspecialchars($c['date']) ?></td>
+                                                <td><?= htmlspecialchars($c['service']) ?></td>
+                                                <td><?= htmlspecialchars($c['first_name'] . ' ' . $c['last_name']) ?></td>
+                                                <td><?= nl2br(htmlspecialchars($c['debrief'])) ?></td>
+                                        <?php if ($user_type === 'medical_staff'): ?>
+                                                                    <td>
+                                                                        <a href="modify_consultation.php?id=<?= $c['ID'] ?>" class="button is-small is-info is-light">Modifier</a>
+                                                        </td>
+                                        <?php endif; ?>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                        </tbody>
+                                        </table>
+                    </div>
+                <?php else: ?>
+                    <p>Aucune consultation passée.</p>
+                <?php endif; ?>
+                </div>
         </div>
 
-        <div class="consultation-block">
-            <h2>Consultations futures</h2>
-            <?php if (count($future_consultations) > 0): ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Service</th>
-                            <th><?php echo $user_type === 'patient' ? 'Médecin' : 'Patient'; ?></th>
-                            <th>Débrief</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($future_consultations as $c): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($c['date']) ?></td>
-                                <td><?= htmlspecialchars($c['service']) ?></td>
-                                <td><?= htmlspecialchars($c['first_name'] . ' ' . $c['last_name']) ?></td>
-                                <td><?= nl2br(htmlspecialchars($c['debrief'])) ?></td>
-                                <td>
-                                    <?php if ($user_type === 'patient'): ?>
-                                        <form method="POST" action="send_message.php">
-                                            <input type="hidden" name="receiver_id" value="<?= $c['ID'] ?>">
-                                            <input type="hidden" name="receiver_type" value="medical_staff">
-                                            <textarea name="message" placeholder="Envoyer un message au médecin"></textarea>
-                                            <button type="submit">Envoyer</button>
-                                        </form>
-                                    <?php else: ?>
-                                                    <form action="delete_consultation.php" method="post">
-                                                        <input type="hidden" name="consultation_id" value="<?= $c['ID'] ?>">
-                                            <textarea name="debrief" placeholder="Ajouter un débrief"></textarea>
-                                            <button type="submit">Ajouter</button>
-                                        </form>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>Aucune consultation future.</p>
-            <?php endif; ?>
+        <!-- Consultations futures -->
+        <div class="column is-6">
+            <div class="box">
+                <h2 class="title is-5">Consultations futures</h2>
+                <?php if (count($future_consultations) > 0): ?>
+                    <div class="table-container">
+                        <table class="table is-striped is-hoverable is-fullwidth is-size-7">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Service</th>
+                                    <th><?= $user_type === 'patient' ? 'Médecin' : 'Patient'; ?></th>
+                                    <th>Débrief</th>
+                                    <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($future_consultations as $c): ?>
+                                            <tr>
+                                                <td><?= htmlspecialchars($c['date']) ?></td>
+                                                <td><?= htmlspecialchars($c['service']) ?></td>
+                                                <td><?= htmlspecialchars($c['first_name'] . ' ' . $c['last_name']) ?></td>
+                                                <td><?= nl2br(htmlspecialchars($c['debrief'])) ?></td>
+                                                <td>
+                                                    <?php if ($user_type === 'patient'): ?>
+                                                        <form method="POST" action="send_message.php">
+                                                            <input type="hidden" name="receiver_id" value="<?= $c['ID'] ?>">
+                                                    <input type="hidden" name="receiver_type" value="medical_staff">
+                                                    <textarea class="textarea is-small" name="message" placeholder="Message..." rows="2"></textarea>
+                                                    <button type="submit" class="button is-small is-link mt-1">Envoyer</button>
+                                                </form>
+                                            <?php else: ?>
+                                                        <form action="delete_consultation.php" method="post">
+                                                            <input type="hidden" name="consultation_id" value="<?= $c['ID'] ?>">
+                                                    <textarea class="textarea is-small" name="debrief" placeholder="Débrief..." rows="2"></textarea>
+                                                    <button type="submit" class="button is-small is-primary mt-1">Ajouter</button>
+                                                </form>
+                                            <?php endif; ?>
+                                                    </td>
+                                                    </tr>
+                                                    <?php endforeach; ?>
+                                                    </tbody>
+                                                    </table>
+                    </div>
+                <?php else: ?>
+                    <p>Aucune consultation future.</p>
+                <?php endif; ?>
 
-            <?php if ($user_type === 'medical_staff'): ?>
+                <!-- Formulaire d'ajout -->
+                <?php if ($user_type === 'medical_staff'): ?>
+                    <hr>
+                    <h3 class="title is-5">Ajouter une Consultation</h3>
+                    <form action="add_consultation.php" method="POST">
+                        <div class="field">
+                            <label class="label">Patient</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="patient_id" required>
+                                        <?php foreach ($patients as $patient): ?>
+                                            <option value="<?= htmlspecialchars($patient['ID']) ?>">
+                                                <?= htmlspecialchars($patient['first_name'] . ' ' . $patient['last_name']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="container">
-        <h1>Ajouter une Consultation</h1>
+                        <div class="field">
+                            <label class="label">Service</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="service_id" required>
+                                        <?php foreach ($services as $service): ?>
+                                            <option value="<?= htmlspecialchars($service['ID']) ?>">
+                                                <?= htmlspecialchars($service['libelle']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
 
-        <form action="add_consultation.php" method="POST">
-            <div class="form-group">
-                <label for="patient_id">Sélectionner un Patient :</label>
-                <select name="patient_id" id="patient_id" required>
-                    <?php foreach ($patients as $patient): ?>
-                        <option value="<?= htmlspecialchars($patient['ID']) ?>">
-                            <?= htmlspecialchars($patient['first_name'] . ' ' . $patient['last_name']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+                        <div class="field">
+                            <label class="label">Date & Heure</label>
+                            <div class="control">
+                                <input class="input is-small mb-2" type="date" name="date" required>
+                                <input class="input is-small" type="time" name="time" min="08:00" max="18:00" required>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Débrief</label>
+                            <div class="control">
+                                <textarea class="textarea is-small" name="debrief" rows="3" required></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="button is-primary is-small">Ajouter</button>
+                    </form>
+                <?php endif; ?>
             </div>
-
-            <div class="form-group">
-                <label for="service_id">Sélectionner un Service :</label>
-                <select name="service_id" id="service_id" required>
-                    <?php foreach ($services as $service): ?>
-                        <option value="<?= htmlspecialchars($service['ID']) ?>">
-                            <?= htmlspecialchars($service['libelle']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="date">Date et heure de la Consultation :</label>
-                <input type="date" name="date" id="date" required>
-                <input type="time" name="time" id="" min="8:00" max="18h00" required>
-            </div>
-
-            <div class="form-group">
-                <label for="debrief">Détails :</label>
-                <textarea name="debrief" id="debrief" rows="4" required></textarea>
-            </div>
-
-            <button type="submit">Ajouter la Consultation</button>
-        </form>
-    </div>
-            <?php endif; ?>
         </div>
     </div>
 </div>
 
+
 </body>
 
-<footer class="footer">
-     <div>
-        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
-     </div>
-</footer>
+<?php include_once './modules/footer.php'; ?>
 
 </html>
