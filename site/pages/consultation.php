@@ -163,7 +163,11 @@ $services = $services_stmt->fetchAll();
                                             <button type="submit">Envoyer</button>
                                         </form>
                                     <?php else: ?>
-                                        <a class="delete-button" href="delete_consultation.php?consultation_id=<?= $c['ID'] ?>">&times;</a>
+                                                    <form action="delete_consultation.php" method="post">
+                                                        <input type="hidden" name="consultation_id" value="<?= $c['ID'] ?>">
+                                            <textarea name="debrief" placeholder="Ajouter un débrief"></textarea>
+                                            <button type="submit">Ajouter</button>
+                                        </form>
                                     <?php endif; ?>
                                 </td>
                             </tr>

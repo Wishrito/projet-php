@@ -1,1 +1,1 @@
-- Un patient doit recevoir un mail lorsqu'un rendez-vous lui est attribué, lui indiquant le jour et l'heure de celui-ci.
+- rien pour le moment

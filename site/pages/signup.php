@@ -104,7 +104,7 @@ $current_date = date('Y-m-d'); // Format YYYY-MM-DD
                         <label for="password" class="label">Mot de passe</label>
                         <div id="password" class="control">
                             <input class="input" type="password" name="password" placeholder="Entrez votre mot de passe"
-                                required>
+                                required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
                         </div>
                     </div>
     
@@ -112,7 +112,7 @@ $current_date = date('Y-m-d'); // Format YYYY-MM-DD
                         <label for="confirmpassword" class="label">Confirmer</label>
                         <div id="confirmpassword" class="control">
                             <input class="input" type="password" name="passwordConfirm"
-                                placeholder="Entrez votre mot de passe" required>
+                                placeholder="Entrez votre mot de passe" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
                         </div>
                     </div>
                 </div>

@@ -37,10 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Mise à jour des informations utilisateur
     if (empty($errors)) {
         $update_sql = "UPDATE " . ($user_type === 'patient' ? 'patient' : 'medical_staff') . "
-                       SET first_name = ?, last_name = ?, email = ?, birth_date = ?, profile_pic = ?, service = ?, job = ?
-                       WHERE ID = ?";
+                       SET first_name = ?, last_name = ?, email = ?, birth_date = ?, profile_pic = ?, service = ?," . ($user_type === 'medical_staff' ? " job = ?" : " ") .
+            "WHERE ID = ?";
         $stmt = $pdo->prepare($update_sql);
-        $stmt->execute([$first_name, $last_name, $email, $birth_date, $profile_pic_path, $service_id, $job_id, $user_id]);
+        $params = [$first_name, $last_name, $email, $birth_date, $profile_pic_path, $service_id, $job_id, $user_id];
+        if ($user_type !== 'patient') {
+            $params[] = $job_id;
+
+        }
+        $stmt->execute($params);
         $success = true;
     }
 
@@ -151,17 +156,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="field">
                     <label class="label">Mot de passe actuel</label>
-                    <input class="input" type="password" name="current_password">
+                    <input class="input" type="password" name="current_password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
                 </div>
 
                 <div class="field">
                     <label class="label">Nouveau mot de passe</label>
-                    <input class="input" type="password" name="new_password">
+                    <input class="input" type="password" name="new_password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
                 </div>
 
                 <div class="field">
                     <label class="label">Confirmer le nouveau mot de passe</label>
-                    <input class="input" type="password" name="confirm_password">
+                    <input class="input" type="password" name="confirm_password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
                 </div>
 
                 <div class="buttons mt-4">

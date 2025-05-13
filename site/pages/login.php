@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label class="label" for="password">Mot de passe</label>
                     <div class="control">
                         <input class="input" type="password" id="password" name="password"
-                            placeholder="Entrez votre mot de passe" required>
+                            placeholder="Entrez votre mot de passe" required    >
                     </div>
                 </div>
         
