@@ -88,9 +88,9 @@ foreach ($convs as $conv) {
             $job_stmt->bindValue(':id', $user['job'], PDO::PARAM_INT);
             $job_stmt->execute();
             $job = $job_stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        if ($job) {
-            $job_label = $job['libelle'];
+            if ($job) {
+                $job_label = $job['libelle'];
+            }
         } else {
             $job_label = "patient";
         }
