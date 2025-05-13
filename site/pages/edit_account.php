@@ -57,6 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 }
+if (isset($_POST['first_login']) && boolval($_POST['first_login']) === true) { ?>
+    <div class='notification is-danger'>Il s'agit de votre première connexion. Pour des raisons de sécurité, vous devez
+    changer votre mot de passe.</div>
+
+    <?php }
 ?>
 
 <!DOCTYPE html>

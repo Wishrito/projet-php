@@ -44,49 +44,49 @@ require_once "./config.php";
                 $full_name = "$last_name $first_name";
             }
             ?>
-                                    <title><?= $site->siteName() ?> - Conversation avec <?= $full_name ?></title> <?php
+                    <title><?= $site->siteName() ?> - Conversation avec <?= $full_name ?></title> <?php
         } else { ?>
-                                    <title><?= $site->siteName() ?> - Messagerie</title>
+                    <title><?= $site->siteName() ?> - Messagerie</title>
     <?php }
     } else {
         // Si aucune conversation n'est sélectionnée
         ?>
-                <title><?= $site->siteName() ?> - Messagerie</title>
+            <title><?= $site->siteName() ?> - Messagerie</title>
     <?php }
     ?>
 </head>
 
 <?php
 // Récupère tous les messages où l'utilisateur est impliqué
+// Récupère tous les messages triés par date décroissante
 $request = "SELECT *
             FROM message
             WHERE (sender_id = :user_id AND sender_type = :user_type)
-               OR (receiver_id = :user_id AND receiver_type = :user_type)";
+               OR (receiver_id = :user_id AND receiver_type = :user_type)
+            ORDER BY date DESC";
 $result = $pdo->prepare($request);
 $result->bindValue(':user_id', $_SESSION['ID'], PDO::PARAM_INT);
 $result->bindValue(':user_type', $_SESSION['user_type'], PDO::PARAM_STR);
 $result->execute();
 $convs = $result->fetchAll(PDO::FETCH_ASSOC);
 
-// Cache des utilisateurs déjà traités
+// Cache des interlocuteurs
 $interlocutors = [];
 $seen_ids = [];
 
 foreach ($convs as $conv) {
-    // Détermine si l'utilisateur est l'expéditeur ou le destinataire
     $is_sender = $_SESSION['ID'] == $conv['sender_id'] && $_SESSION['user_type'] == $conv['sender_type'];
 
     $interlocutor_id = $is_sender ? $conv['receiver_id'] : $conv['sender_id'];
     $interlocutor_type = $is_sender ? $conv['receiver_type'] : $conv['sender_type'];
 
-    // Empêche de traiter deux fois la même personne
     $unique_key = "{$interlocutor_type}_$interlocutor_id";
     if (isset($seen_ids[$unique_key])) {
         continue;
     }
     $seen_ids[$unique_key] = true;
 
-    // Requête pour obtenir les infos de l'interlocuteur
+    // Requête pour récupérer les infos de l’interlocuteur
     $stmt = $pdo->prepare("SELECT * FROM $interlocutor_type WHERE id = :id");
     $stmt->bindValue(':id', $interlocutor_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -106,34 +106,43 @@ foreach ($convs as $conv) {
             $job_label = "patient";
         }
 
-        // Stockage de l’interlocuteur dans un tableau structuré
+        // Ajoute l’interlocuteur avec la date du dernier message
         $interlocutors[] = [
             'id' => $interlocutor_id,
             'type' => $interlocutor_type,
             'username' => $user['username'],
             'profile_pic' => $user['profile_pic'],
-            'job' => $job_label
+            'job' => $job_label,
+            'last_message_date' => $conv['date'] // <-- format timestamp
         ];
     }
 }
+
 ?>
 <body>
 <nav class="sidebar menu has-background-light p-3 is-one-quarter" style="width: 300px; height: 100vh; overflow-y: auto;">
     <ul class="menu-list conversation-list">
-        <?php foreach ($interlocutors as $i): ?>
-                            <li class="conversation-item mb-3">
-                                <a href="?id=<?= htmlspecialchars($i['id']) ?>&type=<?= htmlspecialchars($i['type']) ?>"
-                                class="is-flex is-align-items-center p-2 has-background-white box shadow-sm" style="border-radius: 8px;">
-                                <div class="conversation-card is-flex is-align-items-center">
-                                    <img class="profile-picture mr-3" src="<?= htmlspecialchars($i['profile_pic']) ?>"
-                                        alt="Photo de <?= htmlspecialchars($i['username']) ?>"
-                                        style="width: 50px; height: 50px; border-radius: 50%;">
-                        <div class="conversation-info">
-                            <p class="username mb-1">
-                                Conversation avec <strong><?= htmlspecialchars($i['username']) ?></strong>
-                            </p>
-                            <p class="job-title has-text-grey"><?= htmlspecialchars($i['job']) ?></p>
-                            </div>
+<?php usort($interlocutors, function ($a, $b) {
+    return strtotime($b['last_message_date']) - strtotime($a['last_message_date']);
+});
+
+foreach ($interlocutors as $i): ?>
+    <li class="conversation-item mb-3">
+        <a href="?id=<?= htmlspecialchars($i['id']) ?>&type=<?= htmlspecialchars($i['type']) ?>"
+            class="is-flex is-align-items-center p-2 has-background-white box shadow-sm" style="border-radius: 8px;">
+            <div class="conversation-card is-flex is-align-items-center">
+                <img class="profile-picture mr-3" src="<?= htmlspecialchars($i['profile_pic']) ?>"
+                    alt="Photo de <?= htmlspecialchars($i['username']) ?>"
+                style="width: 50px; height: 50px; border-radius: 50%;">
+            <div class="conversation-info">
+                    <p class="username mb-1">Conversation avec <strong><?= htmlspecialchars($i['username']) ?></strong>
+                    </p>
+                    <p class="job-title has-text-grey"><?= htmlspecialchars($i['job']) ?></p>
+                    <p class="last-message-date has-text-grey is-size-7">
+                    Dernier message : <?= date("d/m/Y H:i", strtotime($i['last_message_date'])) ?>
+                    </p>
+
+                    </div>
                     </div>
                 </a>
             </li>

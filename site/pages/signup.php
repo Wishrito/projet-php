@@ -8,21 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lastname = $_POST['lastname'];
     $firstname = $_POST['firstname'];
     $birth_date = $_POST['birth_date'];
-    $password = $_POST['password'];
-    $passwordConfirm = $_POST['passwordConfirm'];
     $username = strtolower($firstname[0]) . strtolower(str_replace(' ', '-', $lastname));
-
-    // Vérification de la confirmation du mot de passe
-    if ($password !== $passwordConfirm) {
-        echo "<div class='notification is-danger'>Les mots de passe ne correspondent pas.</div>";
-        return;
-    }
-
-    // Vérification de la force du mot de passe
-    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/', $password)) {
-        echo "<div class='notification is-danger'>Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.</div>";
-        return;
-    }
+    $password = $username;
 
     $passwordHash = password_hash($password, PASSWORD_DEFAULT); // Hachage du mot de passe
 
@@ -100,32 +87,6 @@ $current_date = date('Y-m-d'); // Format YYYY-MM-DD
                     <input class="input" type="date" name="birth_date" max="<?= $current_date ?>" required>
                 </div>
                 </div>
-
-            <div class="columns is-variable is-6">
-                <div class="column">
-                    <div class="field">
-                        <label for="password" class="label">Mot de passe</label>
-                        <div class="control">
-                            <input class="input" type="password" name="password"
-                                placeholder="Entrez votre mot de passe"
-                                required
-                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column">
-                    <div class="field">
-                        <label for="passwordConfirm" class="label">Confirmer</label>
-                        <div class="control">
-                            <input class="input" type="password" name="passwordConfirm"
-                                placeholder="Confirmez votre mot de passe"
-                                required
-                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[\s\S]{12,}$">
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="field">
                 <label for="user_type" class="label">Type d'utilisateur</label>

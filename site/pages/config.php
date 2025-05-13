@@ -141,7 +141,8 @@ $base_url = $site->baseUrl()
                         <a href="<?= $base_url ?>signup.php" class="button is-success is-light mx-1">Inscription</a>
                         <a href="<?= $base_url ?>users.php" class="button is-success is-light mx-1">Utilisateurs</a>
                     <?php } ?>
-                                                            <a href="<?= $base_url ?>account.php" class="button is-primary is-light mx-1">Mon compte</a>
+                                                                <a href="<?= $base_url ?>account.php" class="button is-primary is-light mx-1">Mon compte :
+                                                                <?= $_SESSION['username'] ?></a>
                                                         <a href="<?= $base_url ?>inbox.php" class="button is-primary is-light mx-1">Messagerie</a>
                                                         <?php if (!isset($_SESSION['job']) || !$_SESSION['job'] = 75) { ?>
                                                             <a href="<?= $base_url ?>consultation.php" class="button is-primary is-light mx-1">Consultations</a>

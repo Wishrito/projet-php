@@ -1,7 +1,5 @@
 -Hasher + saler mdp et données persos/sensibles (medical_record : (tout sauf id), consultation :(tout sauf id) patient/staff:(mail,)).
--mdp 12 caractères, min, max, chiffres, spé.
 -Vérifier les tokens (attaque CSRF).
--mdp créé par l'utilisateur (actuelement créé par l'admin créateur du compte)
 -Time out si inactivité pendant 10 minutes/si la page est fermée.
 -Bloquer la connexion après plusieurs échecs de connexion.
 -Vérifier inputs texte utilisateur (attaque XSS).

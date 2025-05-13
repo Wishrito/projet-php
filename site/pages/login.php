@@ -7,17 +7,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $user_type = $_POST['user_type'];
     $request = "";
-    switch ($user_type) {
-        case 'patient':
-            $request = "SELECT id, email, username, password, 'patient' AS user_type FROM patient WHERE username = ?";
-            break;
-        case 'medical_staff':
-            $request = "SELECT id, email, username, password, 'medical_staff' AS user_type, job, service FROM medical_staff WHERE username = ?";
-            break;
+    $table = ($user_type === 'medical_staff') ? 'medical_staff' : 'patient';
+    $select_fields = "id, email, username, password, first_connection, '$table' AS user_type";
+    if ($table === 'medical_staff') {
+        $select_fields .= ", job, service";
     }
+
+    $request = "SELECT $select_fields FROM $table WHERE username = :usr";
+    ?>
+<script>
+    console.log("<?= $request; ?>");
+</script><?php
     // Requête préparée pour sélectionner l'utilisateur
     $requete = $pdo->prepare($request);
-    $requete->execute([$username]);
+        $requete->bindParam(":usr", $username);
+        $requete->execute();
     $user = $requete->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($password, $user['password'])) {
@@ -30,10 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['job'] = $user['job'];
             $_SESSION['service'] = $user['service'];
         }
-        header("Location: ./index.php");
+            if (boolval($user['first_connection']) !== true) {
+                header("Location: ./index.php");
+            } else {
+                header("Location: ./edit_account.php?first_login=true");
+            }
     } else { ?>
         <div class='notification is-danger'>Email ou mot de passe incorrect.</div>
     <?php }
+
 }
 ?>
 
@@ -48,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-    <?php if (!isset($_GET['is_suspended'])) {
+    <?php if (!isset($_POST['error'])) {
         if (!isset($_SESSION['username'])) { ?>
         <div class="block">
             <form action="" method="post" class="box">
@@ -98,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
         </div>
     <?php }
-    } else { ?>
+    } elseif ($_POST['error'] == 'account_suspended') { ?>
     <div class="notification is-danger">
         Votre compte a été suspendu. Veuillez contacter l'administrateur.
     </div><?php }

@@ -7,7 +7,7 @@ if (!isset($_SESSION['ID'])) {
     exit();
 }
 
-$request = "SELECT ID, email, username, first_name, last_name, profile_pic, is_suspended, job FROM medical_staff WHERE ID = :id";
+$request = "SELECT ID, email, username, first_name, last_name, profile_pic, is_suspended, job, last_password_edit FROM medical_staff WHERE ID = :id";
 $stmt = $pdo->prepare($request);
 $stmt->bindParam(':id', $_SESSION['ID'], PDO::PARAM_INT);
 $stmt->execute();
@@ -17,7 +17,7 @@ if (!$medical_staff || $medical_staff['job'] != 75) {
 }
 
 // Requête préparée pour sélectionner tous les patients
-$patients_request = "SELECT ID, email, username, first_name, last_name, profile_pic, is_suspended FROM patient";
+$patients_request = "SELECT ID, email, username, first_name, last_name, profile_pic, is_suspended, last_password_edit FROM patient";
 $medical_staff_request = "SELECT
     ms.ID,
     ms.email,
@@ -26,6 +26,7 @@ $medical_staff_request = "SELECT
     ms.last_name,
     ms.profile_pic,
     ms.is_suspended,
+    ms.last_password_edit,
     j.libelle AS job_title
     
 FROM
@@ -64,6 +65,9 @@ $medical_staffs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <h2 class="title is-5"><?= $user['first_name'] . ' ' . $user['last_name'] ?></h2>
                             <p><?= $user['email'] ?></p>
                             <p><?= $user['username'] ?></p>
+                            <p>dernière mise à jour du mot de passe : <bold><?= $user['last_password_edit'] === null ? 'Jamais' : $user['last_password_edit'] ?>
+                                </bold>
+                            </p>
                             <div>
                                 <?php $is_suspended = $user['is_suspended']; ?>
                                 <form action="suspend_user.php" method="POST">
@@ -101,6 +105,9 @@ $medical_staffs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p><?= $staff['email'] ?></p>
                             <p><?= $staff['username'] ?></p>
                             <p><?= $staff['job_title'] ?></p>
+                            <p>dernière mise à jour du mot de passe : <bold><?= $staff['last_password_edit'] === null ? 'Jamais' : $staff['last_password_edit'] ?>
+                                </bold>
+                            </p>
                             <div>
                                 <?php $is_suspended = $staff['is_suspended']; ?>
                                 <form action="suspend_user.php" method="POST">
@@ -111,6 +118,7 @@ $medical_staffs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         class="button is-danger is-small"><?= boolval($is_suspended) === false ? "Suspendre" : "Rétablir" ?></button>
                                 </form>
                                 <form action="edit_password.php" method="POST">
+
                                     <input type="hidden" name="user_id" value="<?= $staff['ID'] ?>">
                                     <input type="hidden" name="user_type" value="medical_staff">
                                     <div>
