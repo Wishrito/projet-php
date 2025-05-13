@@ -8,8 +8,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lastname = $_POST['lastname'];
     $firstname = $_POST['firstname'];
     $birth_date = $_POST['birth_date'];
+    $password = $_POST['password'];
+    $passwordConfirm = $_POST['passwordConfirm'];
     $username = strtolower($firstname[0]) . strtolower(str_replace(' ', '-', $lastname));
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hachage du mot de passe
+
+    // Vérification de la confirmation du mot de passe
+    if ($password !== $passwordConfirm) {
+        echo "<div class='notification is-danger'>Les mots de passe ne correspondent pas.</div>";
+        return;
+    }
+
+    // Vérification de la force du mot de passe
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/', $password)) {
+        echo "<div class='notification is-danger'>Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.</div>";
+        return;
+    }
+
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT); // Hachage du mot de passe
+
     try {
         // Vérifier si l'utilisateur existe déjà
         $requete = $pdo->prepare("SELECT COUNT(*) FROM $user_type WHERE email = ?");
@@ -19,19 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $err = $e->getMessage();
         die("Erreur de connexion : $err");
     }
-    if ($count > 0) { ?>
-        <div class='notification is-danger'>Cet email est déjà utilisé.</div>
-        <?php
+
+    if ($count > 0) {
+        echo "<div class='notification is-danger'>Cet email est déjà utilisé.</div>";
     } else {
         // Insérer l'utilisateur dans la base de données
         $requete = $pdo->prepare("INSERT INTO $user_type (first_name, last_name, username, email, birth_date, password) VALUES (?, ?, ?, ?, ?, ?)");
-        if ($requete->execute([$firstname, $lastname, $username, $email, $birth_date, $password])) {
+        if ($requete->execute([$firstname, $lastname, $username, $email, $birth_date, $passwordHash])) {
             header("Location: ./index.php");
             exit();
         } else {
-            ?>
-            <div class='notification is-danger'>Erreur lors de l'inscription.</div>
-            <?php
+            echo "<div class='notification is-danger'>Erreur lors de l'inscription.</div>";
         }
     }
 }
