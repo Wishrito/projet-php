@@ -1,4 +1,5 @@
-<?php const ACCESS_ALLOWED = true;
+<?php
+const ACCESS_ALLOWED = true;
 require "./config.php";
 ?>
 <!DOCTYPE html>

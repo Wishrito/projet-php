@@ -51,7 +51,6 @@ $user = $requete->fetch(PDO::FETCH_ASSOC);
 
                     <?php if ($user_type === 'patient'): ?>
                         <p><strong>Date d'admission:</strong> <?php echo $user['admission_date']; ?></p>
-                        <p><strong>Étage:</strong> <?php echo $user['floor_lvl']; ?></p>
                     <?php elseif ($user_type === 'medical_staff'): ?>
                         <p><strong>Date d'embauche:</strong> <?php echo $user['hiring_date']; ?></p>
                         <p><strong>Service:</strong> <?php echo $user['service_name']; ?></p>

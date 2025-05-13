@@ -7,15 +7,6 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-try {
-    $pdo = new PDO('mysql:host=localhost;dbname=crm_hopital', 'root', '', [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]);
-} catch (PDOException $e) {
-    die("Erreur de connexion à la base de données: " . $e->getMessage());
-}
-
 $user_type = $_SESSION['user_type'];
 $user_id = $_SESSION['ID'];
 
