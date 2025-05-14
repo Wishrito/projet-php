@@ -128,7 +128,7 @@ $base_url = $site->baseUrl()
         <header class="header navbar is-light is-fixed-top px-4 py-2 is-align-items-center">
             <div class="navbar-brand">
                 <a href="<?= $site->baseUrl() ?>index.php" class="navbar-item">
-                    <img class="img-logo" alt="logo de l'application" src="../src/img/logo_medical.png" width="50">
+                    <img class="img-logo" alt="logo de l'application" src="../src/img/logo_medical.png">
                 </a>
                 <a href="<?= $base_url ?>index.php" class="navbar-item has-text-weight-bold">Accueil</a>
                 </div>
@@ -144,7 +144,7 @@ $base_url = $site->baseUrl()
                                                                 <a href="<?= $base_url ?>account.php" class="button is-primary is-light mx-1">Mon compte :
                                                                 <?= $_SESSION['username'] ?></a>
                                                         <a href="<?= $base_url ?>inbox.php" class="button is-primary is-light mx-1">Messagerie</a>
-                                                        <?php if (!isset($_SESSION['job']) || !$_SESSION['job'] = 75) { ?>
+                                                        <?php if (!isset($_SESSION['job']) || $_SESSION['job'] != 75) { ?>
                                                             <a href="<?= $base_url ?>consultation.php" class="button is-primary is-light mx-1">Consultations</a>
                                                             <a href="<?= $base_url ?>medical_record.php" class="button is-primary is-light mx-1">Dossier Médical</a>
                                                         <?php } ?>

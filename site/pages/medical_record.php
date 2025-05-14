@@ -160,10 +160,6 @@ $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </section>
 </body>
 
-<footer class="footer">
-     <div>
-        <p>© 2025 <?= $site->siteName() ?>. Tous droits réservés.</p>
-     </div>
-</footer>
+<?php include_once './modules/footer.php'; ?>
 
 </html>

@@ -187,10 +187,6 @@ if (isset($_POST['first_login']) && boolval($_POST['first_login']) === true) { ?
 </section>
 </body>
 
-<footer class="footer">
-    <div>
-        <p>© 2025 <?php echo $site->siteName() ?>. Tous droits réservés.</p>
-    </div>
-</footer>
+<?php include_once './modules/footer.php'; ?>
 
 </html>
