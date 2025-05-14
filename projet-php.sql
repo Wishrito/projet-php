@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `consultation` (
   CONSTRAINT `FK_consultation_staff` FOREIGN KEY (`medical_staff_id`) REFERENCES `medical_staff` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.consultation : ~2 rows (environ)
+-- Listage des données de la table crm_hopital.consultation : ~0 rows (environ)
 DELETE FROM `consultation`;
 
 -- Listage de la structure de table crm_hopital. job
@@ -152,6 +152,7 @@ CREATE TABLE IF NOT EXISTS `medical_staff` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `last_password_edit` timestamp NULL DEFAULT NULL,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `first_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `last_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -162,6 +163,7 @@ CREATE TABLE IF NOT EXISTS `medical_staff` (
   `job` int DEFAULT '0',
   `profile_pic` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '../src/img/profile_pics/default.png',
   `is_suspended` int DEFAULT '0',
+  `first_connection` tinyint DEFAULT '1',
   PRIMARY KEY (`ID`) USING BTREE,
   KEY `fk_staff_service` (`service`),
   KEY `fk_staff_job` (`job`),
@@ -169,16 +171,16 @@ CREATE TABLE IF NOT EXISTS `medical_staff` (
   CONSTRAINT `fk_staff_service` FOREIGN KEY (`service`) REFERENCES `service` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.medical_staff : ~5 rows (environ)
+-- Listage des données de la table crm_hopital.medical_staff : ~7 rows (environ)
 DELETE FROM `medical_staff`;
-INSERT INTO `medical_staff` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `leaving_date`, `hiring_date`, `service`, `job`, `profile_pic`, `is_suspended`) VALUES
-	(1, 'admin@gmail.com', '$2y$10$bSCNkA6g9EMxxkHB8gDbVOII0IX0oEniRmWOUm2FDITL3EMSjljPi', 'admin', 'Admin', 'Admin', '2003-06-01', NULL, NULL, 0, 75, '../src/img/profile_pics/Staff_4.png', 0),
-	(2, 'systeme@santeplus.com', '$2y$10$L7Vs9KkiV5z71q.bamI3AuRARVvE/9kLIQGEaVyDqsgJx80/Owj72', 'ssystème', 'santéplus', 'système', '2025-05-04', NULL, NULL, 0, 0, '../src/img/logo_medical.png', 0),
-	(3, 'julien.hocde@exmeple.com', '$2y$10$g73uc4EwtN0zAMAWF8YCUOZHczCZ/H6gVnI8/PS.A6EpZhMVbemnW', 'jhocdé', 'Julien', 'Hocdé', '1980-06-12', NULL, '2025-05-13', 7, 40, '../src/img/profile_pics/default.png', 0),
-	(4, 'marie.moreau@exemple.com', '$2y$10$vo2IZg3rCO55Lo.FjWhi/.JRAYp8o0a2VP8Bp.GH5tXDhyHInxIKe', 'mmoreau', 'Marie', 'Moreau', '1990-09-03', NULL, '2025-05-13', 3, 34, '../src/img/profile_pics/default.png', 0),
-	(5, 'youssef.khan@exemple.com', '$2y$10$yEI11rYmoD887RjThSPaxO8VJfxAlAWEzBD55Y5BzO.x.gHjDX0ua', 'ykhan', 'Youssef', 'Khan', '1998-12-18', NULL, '2025-05-13', 5, 16, '../src/img/profile_pics/Staff_3.png', 0),
-	(6, 'camille.bernard@exemple.com', '$2y$10$w1PECGGze79ViPoNBmm84.YsTm5opNXLJGh9PQ4j2oDJww0wdl4BK', 'cbernard', 'Camille', 'Bernard', '1975-04-30', NULL, '2025-05-13', 1, 51, '../src/img/profile_pics/default.png', 0),
-	(7, 'anais.fernandez@exemple.com', '$2y$10$j8G.2q5mhhnurtAIFYu.8eYaUOMa0ZN5x6nnSg6ofBTPOuH34QlDa', 'afernandez', 'Anaïs', 'Fernandez', '1994-08-09', NULL, '2025-05-13', 10, 57, '../src/img/profile_pics/default.png', 0);
+INSERT INTO `medical_staff` (`ID`, `email`, `password`, `last_password_edit`, `username`, `first_name`, `last_name`, `birth_date`, `leaving_date`, `hiring_date`, `service`, `job`, `profile_pic`, `is_suspended`, `first_connection`) VALUES
+	(1, 'admin@gmail.com', '$2y$10$bSCNkA6g9EMxxkHB8gDbVOII0IX0oEniRmWOUm2FDITL3EMSjljPi', NULL, 'admin', 'Admin', 'Admin', '2003-06-01', NULL, NULL, 0, 75, '../src/img/profile_pics/Staff_4.png', 0, 0),
+	(2, 'systeme@santeplus.com', '$2y$10$L7Vs9KkiV5z71q.bamI3AuRARVvE/9kLIQGEaVyDqsgJx80/Owj72', NULL, 'ssystème', 'santéplus', 'système', '2025-05-04', NULL, NULL, 0, 0, '../src/img/logo_medical.png', 0, 0),
+	(3, 'julien.hocde@exmeple.com', '$2y$10$g73uc4EwtN0zAMAWF8YCUOZHczCZ/H6gVnI8/PS.A6EpZhMVbemnW', NULL, 'jhocdé', 'Julien', 'Hocdé', '1980-06-12', NULL, '2025-05-13', 7, 40, '../src/img/profile_pics/default.png', 0, 0),
+	(4, 'marie.moreau@exemple.com', '$2y$10$vo2IZg3rCO55Lo.FjWhi/.JRAYp8o0a2VP8Bp.GH5tXDhyHInxIKe', NULL, 'mmoreau', 'Marie', 'Moreau', '1990-09-03', NULL, '2025-05-13', 3, 34, '../src/img/profile_pics/default.png', 0, 0),
+	(5, 'youssef.khan@exemple.com', '$2y$10$yEI11rYmoD887RjThSPaxO8VJfxAlAWEzBD55Y5BzO.x.gHjDX0ua', NULL, 'ykhan', 'Youssef', 'Khan', '1998-12-18', NULL, '2025-05-13', 5, 16, '../src/img/profile_pics/Staff_3.png', 0, 0),
+	(6, 'camille.bernard@exemple.com', '$2y$10$w1PECGGze79ViPoNBmm84.YsTm5opNXLJGh9PQ4j2oDJww0wdl4BK', NULL, 'cbernard', 'Camille', 'Bernard', '1975-04-30', NULL, '2025-05-13', 1, 51, '../src/img/profile_pics/default.png', 0, 0),
+	(7, 'anais.fernandez@exemple.com', '$2y$10$j8G.2q5mhhnurtAIFYu.8eYaUOMa0ZN5x6nnSg6ofBTPOuH34QlDa', NULL, 'afernandez', 'Anaïs', 'Fernandez', '1994-08-09', NULL, '2025-05-13', 10, 57, '../src/img/profile_pics/default.png', 0, 0);
 
 -- Listage de la structure de table crm_hopital. message
 CREATE TABLE IF NOT EXISTS `message` (
@@ -190,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `message` (
   `receiver_id` int NOT NULL DEFAULT '0',
   `receiver_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table crm_hopital.message : ~3 rows (environ)
 DELETE FROM `message`;
@@ -212,18 +214,20 @@ CREATE TABLE IF NOT EXISTS `patient` (
   `leaving_date` timestamp NULL DEFAULT NULL,
   `floor_lvl` int DEFAULT '0',
   `profile_pic` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '../src/img/profile_pics/default.png',
+  `last_password_edit` timestamp NULL DEFAULT NULL,
   `is_suspended` tinyint(1) DEFAULT '0',
+  `first_connection` tinyint DEFAULT '1',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table crm_hopital.patient : ~0 rows (environ)
+-- Listage des données de la table crm_hopital.patient : ~5 rows (environ)
 DELETE FROM `patient`;
-INSERT INTO `patient` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `admission_date`, `leaving_date`, `floor_lvl`, `profile_pic`, `is_suspended`) VALUES
-	(7, 'lucie.roth@exemple.com', '$2y$10$/A.qxpEdOTt49LTSYNJ8c.g4OqxsbxYAhM/0B9ps5ARCsuSuNUMMa', 'lroth', 'Lucie', 'Roth', '1992-04-15', '2025-05-13 08:58:44', NULL, 0, '../src/img/profile_pics/default.png', 0),
-	(8, 'thomas.dupont@exemple.com', '$2y$10$zThYtzIMAuwkULcTT3oEke47yPMgWJse2bI6HJ9OBAmqGTxzduSRi', 'tdupont', 'Thomas', 'Dupont', '1985-07-20', '2025-05-13 08:59:52', NULL, 0, '../src/img/profile_pics/default.png', 0),
-	(9, 'lea.durand@exemple.com', '$2y$10$/TamWIPOUBTmArDHo4Gy3.uJbzKfP5/eavYAdsanpPsppFkHTwIoC', 'ldurand', 'Léa', 'Durand', '2000-10-01', '2025-05-13 09:00:48', NULL, 0, '../src/img/profile_pics/default.png', 0),
-	(10, 'antoine.roux@exemple.com', '$2y$10$qyONviljZRbxpDVDhbKTm.VLuGyAnHU4Iw6h6BoGvkqEIqve7k.QS', 'aroux', 'Antoine', 'Roux', '1978-11-23', '2025-05-13 09:01:25', NULL, 0, '../src/img/profile_pics/default.png', 0),
-	(11, 'emma.leroy@exemple.com', '$2y$10$ZbPYznUhyx8PZnTqsxlPFOhA1b60Qo20mB2rk69iXl.mw/ZkL.fhu', 'eleroy', 'Emma', 'Leroy', '1996-03-05', '2025-05-13 09:02:36', NULL, 0, '../src/img/profile_pics/default.png', 0);
+INSERT INTO `patient` (`ID`, `email`, `password`, `username`, `first_name`, `last_name`, `birth_date`, `admission_date`, `leaving_date`, `floor_lvl`, `profile_pic`, `last_password_edit`, `is_suspended`, `first_connection`) VALUES
+	(7, 'lucie.roth@exemple.com', '$2y$10$/A.qxpEdOTt49LTSYNJ8c.g4OqxsbxYAhM/0B9ps5ARCsuSuNUMMa', 'lroth', 'Lucie', 'Roth', '1992-04-15', '2025-05-13 08:58:44', NULL, 0, '../src/img/profile_pics/default.png', NULL, 1, 0),
+	(8, 'thomas.dupont@exemple.com', '$2y$10$zThYtzIMAuwkULcTT3oEke47yPMgWJse2bI6HJ9OBAmqGTxzduSRi', 'tdupont', 'Thomas', 'Dupont', '1985-07-20', '2025-05-13 08:59:52', NULL, 0, '../src/img/profile_pics/default.png', NULL, 0, 0),
+	(9, 'lea.durand@exemple.com', '$2y$10$/TamWIPOUBTmArDHo4Gy3.uJbzKfP5/eavYAdsanpPsppFkHTwIoC', 'ldurand', 'Léa', 'Durand', '2000-10-01', '2025-05-13 09:00:48', NULL, 0, '../src/img/profile_pics/default.png', NULL, 0, 0),
+	(10, 'antoine.roux@exemple.com', '$2y$10$qyONviljZRbxpDVDhbKTm.VLuGyAnHU4Iw6h6BoGvkqEIqve7k.QS', 'aroux', 'Antoine', 'Roux', '1978-11-23', '2025-05-13 09:01:25', NULL, 0, '../src/img/profile_pics/default.png', NULL, 0, 0),
+	(11, 'emma.leroy@exemple.com', '$2y$10$ZbPYznUhyx8PZnTqsxlPFOhA1b60Qo20mB2rk69iXl.mw/ZkL.fhu', 'eleroy', 'Emma', 'Leroy', '1996-03-05', '2025-05-13 09:02:36', NULL, 0, '../src/img/profile_pics/default.png', NULL, 0, 0);
 
 -- Listage de la structure de table crm_hopital. service
 CREATE TABLE IF NOT EXISTS `service` (
